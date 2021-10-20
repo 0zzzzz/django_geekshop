@@ -3,7 +3,7 @@
 {% block menu %}
     <div class="hero-white">
         <div class="header clearfix">
-            <a href="index.html" class="logo"></a>
+            <a href="{% url 'index' %}" class="logo"></a>
             <ul class="menu">
                 {% include 'mainapp/includes/inc_main_menu.html' %}
             </ul>
@@ -22,7 +22,7 @@
         <div class="details-products">
             <div class="details-slider">
                 <div class="slider-product">
-                    <img src="{% static 'img/slider1.jpg' %}">
+                    <img src="{% static 'img/slider1.jpg' %}" alt="">
                 </div>
                 <div class="slider-control">
                     <div class="block">

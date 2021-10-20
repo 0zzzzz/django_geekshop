@@ -1,7 +1,9 @@
 <ul class="links-menu">
-    {% for link_item in links_menu %}
-        <li><a href="{% url link_item.url %}"
-               {% if request.resolver_match.url_name == link_item.url %}class="active"{% endif %}>{{ link_item.title }}</a>
+    <li><a href="{% url 'products:products' %}">Все</a> </li>
+    {% for link_item in links_menu.reverse %}
+        <li><a href="{% url 'products:category' link_item.pk %}"
+{#       <li><a href="{% url 'products:category' link_item.name %}"#}
+               {% if request.resolver_match.url_name == link_item.url %}class="active"{% endif %}>{{ link_item.name }}</a>
         </li>
     {% endfor %}
 </ul>
