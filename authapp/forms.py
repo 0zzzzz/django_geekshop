@@ -32,6 +32,13 @@ class ShopUserRegisterForm(UserCreationForm):
             raise forms.ValidationError('Слишком молод!')
         return data
 
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if ShopUser.objects.filter(email=data).exists():
+            raise forms.ValidationError('Такой e-mail уже существует')
+        else:
+            return data
+
 
 class ShopUserEditForm(UserChangeForm):
     class Meta:
@@ -51,3 +58,10 @@ class ShopUserEditForm(UserChangeForm):
         if data < 18 or data > 99:
             raise forms.ValidationError('Слишком молод!')
         return data
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if ShopUser.objects.filter(email=data).exists():
+            raise forms.ValidationError('Такой e-mail уже существует')
+        else:
+            return data

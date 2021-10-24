@@ -2,11 +2,15 @@
 {% load static %}
 
 {% block content %}
+    <div class="h2 text-center head">
+        Вход в систему
+    </div>
     <form class="form-horizontal" action="{% url 'auth:login' %}" method="POST">
         {% csrf_token %}
         {{ login_form.as_p }}
-        <input class="form-control" type="submit" value="войти">
+        <input class="auth_button" type="submit" value="Войти">
     </form>
-        <hr>
-    <a class="form-control" href="{% url 'auth:register' %}">зарегестрироваться</a>
+    <hr>
+    <input class="auth_button" type="button" value="Зарегестрироваться"
+           onClick="window.location='{% url 'auth:register' %}'"/>
 {% endblock %}

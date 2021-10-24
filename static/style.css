@@ -77,19 +77,6 @@ html, body {
     border-bottom: 3px solid #212121;
 }
 
-.log-block {
-    width: 400px;
-    padding: 10px 32px 40px;
-    box-sizing: border-box;
-    box-shadow: 5px 20px 50px rgba(0, 0, 117, 0.1);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    margin-top: 50px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .search {
     display: block;
     width: 23px;
@@ -1202,4 +1189,43 @@ td:first-child {
 
 .related-products a:hover .text {
     display: block;
+}
+
+.auth_button {
+    text-decoration: none;
+    background: #d8e4fb;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #bbbbbb;
+    font-size: 20px;
+    text-align: center;
+    color: #5a5f6a;
+    width: 100%;
+}
+
+.auth_button:hover {
+    border-color: #66afe9;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    box-shadow: 0px 0px 10px rgba(102, 175, 233, 0.4);
+}
+
+.log-block {
+    width: 400px;
+    padding: 10px 32px 40px;
+    box-sizing: border-box;
+    box-shadow: 5px 20px 50px rgba(0, 0, 117, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.edit_avatar {
+    padding-top: 15px;
+    width: 100%;
 }
