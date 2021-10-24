@@ -7,4 +7,6 @@
         {{ login_form.as_p }}
         <input class="form-control" type="submit" value="войти">
     </form>
+        <hr>
+    <a class="form-control" href="{% url 'auth:register' %}">зарегестрироваться</a>
 {% endblock %}

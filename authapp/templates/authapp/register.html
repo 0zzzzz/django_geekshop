@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'authapp/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+    <form class="form-horizontal" action="{% url 'auth:register' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ register_form.as_p }}
+        <input class="form-control" type="submit" value="зарегестрироваться">
+    </form>
+    <hr>
+    <a class="form-control" href="{% url 'auth:login' %}">войти</a>
+{% endblock %}
