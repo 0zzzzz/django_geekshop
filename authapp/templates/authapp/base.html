@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 {#{% load staticfiles %}#}
-<html>
+<html lang="">
 <head>
     <meta charset="utf-8">
     <title>
@@ -20,13 +20,13 @@
 </head>
 <body>
 <div class="container">
-    <div class="log-block">
-        <div class="login">
+    {#    <div class="log-block">#}
+    <div class="login">
 
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% block content %}
+        {% endblock %}
     </div>
+    {#    </div>#}
 </div>
 </body>
 </html>

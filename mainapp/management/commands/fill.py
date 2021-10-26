@@ -14,13 +14,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         categories = load_from_json('categories')
-
         ProductCategory.objects.all().delete()
         for category in categories:
             ProductCategory.objects.create(**category)
-
         products = load_from_json('products')
-
         Product.objects.all().delete()
         for product in products:
             category_name = product['category']

@@ -36,8 +36,7 @@ class ShopUserRegisterForm(UserCreationForm):
         data = self.cleaned_data['email']
         if ShopUser.objects.filter(email=data).exists():
             raise forms.ValidationError('Такой e-mail уже существует')
-        else:
-            return data
+        return data
 
 
 class ShopUserEditForm(UserChangeForm):
@@ -63,5 +62,4 @@ class ShopUserEditForm(UserChangeForm):
         data = self.cleaned_data['email']
         if ShopUser.objects.filter(email=data).exists():
             raise forms.ValidationError('Такой e-mail уже существует')
-        else:
-            return data
+        return data
