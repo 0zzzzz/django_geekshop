@@ -1732,7 +1732,9 @@ td:first-child {
     padding-top: 15px;
     width: 100%;
 }
-.log-over:hover {
-    background: #777777;
+.log_entexit:hover {
+    background: #e3c241;
 }
-
+.log_regedit:hover {
+    background: #8aabb4;
+}
