@@ -3,19 +3,13 @@
 {% block menu %}
     <div class="hero">
     <div class="header clearfix">
-        <a href="{% url 'index' %}" class="logo"></a>
-        <ul class="menu">
-            {% include 'mainapp/includes/inc_main_menu.html' %}
-        </ul>
-        <a href="#" class="search"></a>
-        <a href="#" class="basket"></a>
+        {% include 'mainapp/includes/inc_main_menu.html' %}
     </div>
 
 {% endblock %}
 {% block content %}
     <h1>наши контакты</h1>
     </div>
-
     <div class="location">
         <div class="location-1">
             <i class="fa fa-map-marker fa-5x"></i>

@@ -1732,4 +1732,7 @@ td:first-child {
     padding-top: 15px;
     width: 100%;
 }
+.log-over:hover {
+    background: #777777;
+}
 

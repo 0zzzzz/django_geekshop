@@ -4,25 +4,28 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}{{ title|title }}{% endblock %}</title>
+
     {% block css %}
         <link rel="stylesheet" href="{% static 'style.css' %}">
         <link rel="stylesheet" href="{% static '/fonts/font-awesome/css/font-awesome.css' %}">
     {% endblock %}
+
     {% block js %}
     {% endblock %}
+
 </head>
 <body>
 <div class="container">
+
     {% block menu %}
     {% endblock %}
 
     {% block content %}
     {% endblock %}
 
-
     <div class="clr"></div>
-
 </div>
+
 {% block footer %}
     <div class="footer">
         <div class="clearfix">
@@ -36,7 +39,9 @@
                 <h3>Оставайтесь на связи</h3>
                 <p>Подписаться на новости и рассылки</p>
                 <form>
-                    <input type="email" name="email" placeholder="ваш email">
+                    <label>
+                        <input type="email" name="email" placeholder="ваш email">
+                    </label>
                     <a href="#"><i class="fa fa-paper-plane fa-2x" aria-hidden="true"></i></a>
                 </form>
             </div>
