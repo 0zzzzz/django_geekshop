@@ -9,7 +9,9 @@ from mainapp.models import Product, ProductCategory
 def get_basket(user):
     if user.is_authenticated:
         return Basket.objects.filter(user=user)
+        # return sum(list(Basket.objects.filter(user=user).values_list('quantity', flat=True)))
     return []
+    # return 0
 
 
 def index(request):
