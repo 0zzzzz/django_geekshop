@@ -690,8 +690,14 @@ html, body {
 	background-image: url(/static/img/search.png);
 	position: absolute;
 	top: 63px;
+    margin-left: 5px;
+    /*padding-left: 40px;*/
+    background-repeat: no-repeat;
 	/*left: 1176px;*/
 	left: 1151px;
+}
+.basket_count {
+    color: #a82312;
 }
 .basket {
 	display: block;
@@ -704,6 +710,10 @@ html, body {
 	left: 1185px;
     text-decoration: none;
     color: #555;
+    padding-left: 28px;
+    background-repeat: no-repeat;
+    font-weight: bold;
+    font-size: 19px;
 }
 
 .basket span {
