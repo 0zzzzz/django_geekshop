@@ -10,15 +10,19 @@ def basket(request):
 
 
 def add(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    basket = Basket.objects.filter(user=request.user, product=product).first()
-    if not basket:
-        basket = Basket(user=request.user, product=product)
-    basket.quantity += 1
-    basket.save()
+    # не знаю насколько это в дальнейшем понадобится, но так сайт не ломается при незалогиненом пользователе
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=pk)
+        basket = Basket.objects.filter(user=request.user, product=product).first()
+        if not basket:
+            basket = Basket(user=request.user, product=product)
+        basket.quantity += 1
+        basket.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def remove(request, pk):
-    content = {}
-    return render(request, 'basketapp/basket.html', content)
+    basket_item = get_object_or_404(Basket, pk=pk)
+    basket_item.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
