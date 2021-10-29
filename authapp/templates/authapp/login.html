@@ -5,9 +5,12 @@
     <div class="h2 text-center head">
         Вход в систему
     </div>
-    <form class="form-horizontal" action="{% url 'auth:login' %}" method="POST">
+    <form class="form-horizontal" action="{% url 'auth:login' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ login_form.as_p }}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
         <input class="auth_button" type="submit" value="Войти">
     </form>
     <hr>
