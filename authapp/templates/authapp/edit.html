@@ -11,4 +11,7 @@
         <input class="auth_button" type="submit" value="Cохранить">
     </form>
     <img class="edit_avatar" src="/media/{{ user.avatar }}" alt="avatar"/>
+    <button class="btn btn-round">
+        <a href="{% url 'index' %}">на главную</a>
+    </button>
 {% endblock %}

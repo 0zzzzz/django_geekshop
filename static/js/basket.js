@@ -7,6 +7,6 @@ window.onload = function(){
                 $('.basket_list').html(data.result)
             }
         })
-        return false;
+        event.preventDefault();
     });
 };
