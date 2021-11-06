@@ -1,4 +1,10 @@
+from django.urls import reverse
+
 from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseRedirect
+
+from adminapp.forms import ShopUserAdminEdit
+from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render
 from mainapp.models import Product, ProductCategory
@@ -6,9 +12,17 @@ from mainapp.models import Product, ProductCategory
 
 @user_passes_test(lambda u: u.is_superuser)
 def user_create(request):
+    if request.method == 'POST':
+        user_form = ShopUserRegisterForm(request.POST, request.FILES)
+        if user_form.is_valid():
+            user_form.save()
+            return HttpResponseRedirect(reverse('adminapp:user_list'))
+    else:
+        user_form = ShopUserRegisterForm()
     context = {
+        'form': user_form,
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/user_form.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -20,25 +34,49 @@ def users(request):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def user_update(request):
+def user_update(request, pk):
+    current_user = get_object_or_404(ShopUser, pk=pk)
+    if request.method == 'POST':
+        user_form = ShopUserAdminEdit(request.POST, request.FILES, instance=current_user)
+        if user_form.is_valid():
+            user_form.save()
+            return HttpResponseRedirect(reverse('adminapp:user_list'))
+    else:
+        user_form = ShopUserAdminEdit(instance=current_user)
     context = {
-
+        'form': user_form,
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/user_form.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def user_delete(request):
-    context = {
+def user_delete(request, pk):
+    current_user = get_object_or_404(ShopUser, pk=pk)
+    if request.method == 'POST':
+        if current_user.is_active:
+        # current_user.delete()
+            current_user.is_active = False
+        else:
+            current_user.is_active = True
 
+        current_user.save()
+        return HttpResponseRedirect(reverse('adminapp:user_list'))
+    context = {
+        'object': current_user,
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/user_delete.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def category_create(request):
+def category_create(request, pk):
+    current_user = get_object_or_404(ShopUser, pk=pk)
+    if request.method == 'POST':
+        # current_user.delete()
+        current_user.is_active = False
+        current_user.save()
+        return HttpResponseRedirect(reverse('adminapp:user_list'))
     context = {
-
+        'object': current_user,
     }
     return render(request, 'adminapp/users.html', context)
 
