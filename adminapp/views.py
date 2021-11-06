@@ -3,10 +3,10 @@ from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 
-from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm
+from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEditForm
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from mainapp.models import Product, ProductCategory
 
 
@@ -56,7 +56,7 @@ def user_delete(request, pk):
     current_user = get_object_or_404(ShopUser, pk=pk)
     if request.method == 'POST':
         if current_user.is_active:
-        # current_user.delete()
+            # current_user.delete()
             current_user.is_active = False
         else:
             current_user.is_active = True
@@ -110,13 +110,12 @@ def category_update(request, pk):
     return render(request, 'adminapp/category_form.html', context)
 
 
-
 @user_passes_test(lambda u: u.is_superuser)
 def category_delete(request, pk):
     current_category = get_object_or_404(ProductCategory, pk=pk)
     if request.method == 'POST':
         if current_category.is_active:
-        # current_user.delete()
+            # current_user.delete()
             current_category.is_active = False
         else:
             current_category.is_active = True
@@ -130,11 +129,20 @@ def category_delete(request, pk):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_create(request):
+def product_create(request, pk):
+    title = 'продукт/создание'
+    if request.method == 'POST':
+        product_form = ProductEditForm(request.POST, request.FILES)
+        if product_form.is_valid():
+            product_form.save()
+            return HttpResponseRedirect(reverse('adminapp:product_list'))
+    else:
+        product_form = ProductEditForm()
     context = {
-
+        'title': title,
+        'form': product_form,
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/product_form.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -147,24 +155,45 @@ def products(request, pk):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_detail(request):
+def product_detail(request, pk):
     context = {
-
+        'category': get_object_or_404(ProductCategory, pk=pk),
+        'object_list': Product.objects.filter(category__pk=pk).order_by('-is_active')
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/products.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_update(request):
+def product_update(request, pk):
+    current_product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        current_product = ProductEditForm(request.POST, request.FILES, instance=current_product)
+        if current_product.is_valid():
+            current_product.save()
+            return HttpResponseRedirect(reverse('adminapp:category_list'))
+    else:
+        current_product = ProductEditForm(instance=current_product)
     context = {
-
+        'form': current_product,
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/product_form.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def product_delete(request):
+def product_delete(request, pk):
+    current_product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        if current_product.is_active:
+            current_product.is_active = False
+        else:
+            current_product.is_active = True
+        current_product.save()
+        # return HttpResponseRedirect(reverse('adminapp:product_list'))
+        return HttpResponseRedirect(reverse('adminapp:category_list'))
+        # return redirect(request.META.get('HTTP_REFERER'))
+        # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     context = {
-
+        'category': get_object_or_404(Product, pk=pk),
+        'object': current_product,
     }
-    return render(request, 'adminapp/users.html', context)
+    return render(request, 'adminapp/product_delete.html', context)
