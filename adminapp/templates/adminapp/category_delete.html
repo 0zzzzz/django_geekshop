@@ -3,7 +3,7 @@
 {% block content %}
     <div class="del_block">
         {% if object.is_active %}
-{#            Уверены, что хотите удалить категорию {{ object.get_full_name }}?#}
+            {#            Уверены, что хотите удалить категорию {{ object.get_full_name }}?#}
             Уверены, что хотите удалить категорию {{ category.name }}?
         {% else %}
             Уверены, что хотите востановить категорию?
@@ -14,8 +14,13 @@
                 <br>
             {% endif %}
             {% csrf_token %}
-            <input type="submit" class="btn btn-danger col-lg-12" value="Уверен">
+            <input type="submit" class="btn-block btn-danger col-lg-12" value="Да">
+
         </form>
-        <a href="{% url 'adminapp:category_list' %}" class="btn btn-success col-lg-12">Нет</a>
+        <button onclick="document.location='{% url 'adminapp:category_list' %}'"
+                class="btn-block btn-success col-lg-12">
+            Отмена
+        </button>
+
     </div>
 {% endblock %}
