@@ -3,12 +3,11 @@
 
 {% block content %}
     <div class="products_list">
-        <button class="new_product">
-            <a href={% url 'adminapp:product_create' category.pk %}>
+{#            <a href={% url 'adminapp:product_create' category.pk %} class="admin_button">#}
                 {#            <a href={% url 'adminapp:product_create' %}>#}
-                новый продукт
-            </a>
-        </button>
+{#                <span>новый продукт</span>#}
+{#            </a>#}
+
         {% for object in object_list %}
             <div class="product_record {% if not object.is_active %}not_active{% endif %}">
                 <img src="/media/{{ object.image|default:'products_images/default.jpg' }}"

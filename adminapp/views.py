@@ -170,7 +170,7 @@ def product_update(request, pk):
         current_product = ProductEditForm(request.POST, request.FILES, instance=current_product)
         if current_product.is_valid():
             current_product.save()
-            return HttpResponseRedirect(reverse('adminapp:category_list'))
+            return HttpResponseRedirect(reverse('adminapp:products_test'))
     else:
         current_product = ProductEditForm(instance=current_product)
     context = {
@@ -189,7 +189,7 @@ def product_delete(request, pk):
             current_product.is_active = True
         current_product.save()
         # return HttpResponseRedirect(reverse('adminapp:product_list'))
-        return HttpResponseRedirect(reverse('adminapp:category_list'))
+        return HttpResponseRedirect(reverse('adminapp:products_test'))
         # return redirect(request.META.get('HTTP_REFERER'))
         # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     context = {
@@ -197,3 +197,11 @@ def product_delete(request, pk):
         'object': current_product,
     }
     return render(request, 'adminapp/product_delete.html', context)
+
+
+def products_test(request):
+    context = {
+        # 'category': get_object_or_404(ProductCategory, pk=pk),
+        'object_list': Product.objects.all(),
+    }
+    return render(request, 'adminapp/products.html', context)

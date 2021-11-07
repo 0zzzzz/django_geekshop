@@ -1,7 +1,7 @@
 {% extends 'adminapp/base.html' %}
 
 {% block content %}
-    <div class="">
+    <div class="login">">
         {%  if object.is_active %}
             Уверены, что хотите удалить пользователя {{ object.get_full_name }}?
         {% else %}

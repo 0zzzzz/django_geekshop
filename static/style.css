@@ -99,7 +99,7 @@ html, body {
 }
 
 .products_list {
-    margin-left: 250px;
+    margin-left: 150px;
 }
 
 .products_list .new_product {
@@ -312,6 +312,7 @@ html, body {
 }
 
 .user_record .user_name {
+    padding-left: 68px;
     display: block;
     float: left;
     margin-top: 15px;
@@ -376,7 +377,7 @@ html, body {
 .admin_menu ul.menu{
     display: block;
     float: none;
-    width: 550px;
+    width: 900px;
     height: 50px;
     margin: auto;
     color: #555;
@@ -1727,6 +1728,7 @@ td:first-child {
     color: #000000;
     width: 100%;
 }
+
 .auth_button:hover {
     border-color: #66afe9;
     border-style: solid;
@@ -1774,7 +1776,9 @@ td:first-child {
 .log_regedit:hover {
     background: #8aabb4;
 }
-
+.log_admin:hover {
+    background: #db3320;
+}
 .edit_cross {
 	/* display: block;
 	position: fixed;
@@ -1806,4 +1810,36 @@ td:first-child {
 }
 .edit_cross:hover {
 	background-image: url(/static/img/edit_cross_hover_blue.png);
+}
+.admin_button {
+    text-decoration: none;
+    background: #ffffff;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #000000;
+    font-size: 20px;
+    text-align: center;
+    color: #000000;
+    /*width: 100%;*/
+}
+
+.admin_button:hover {
+    border-color: #66afe9;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    box-shadow: 0px 0px 10px rgba(102, 175, 233, 0.4);
+}
+.user_box {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 25px;
+    overflow: hidden;
+    width: 72em;
+    height: 10em;
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+    display: block;
 }
