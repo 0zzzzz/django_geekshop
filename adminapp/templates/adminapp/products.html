@@ -3,14 +3,14 @@
 
 {% block content %}
     <div class="products_list">
-{#            <a href={% url 'adminapp:product_create' category.pk %} class="admin_button">#}
-                {#            <a href={% url 'adminapp:product_create' %}>#}
-{#                <span>новый продукт</span>#}
-{#            </a>#}
+        {#            <a href={% if category %}{% url 'adminapp:product_create' category.pk %}{% endif %} class="admin_button">#}
+        <a class="adminadd_button" href={% url 'adminapp:product_create' %} >
+            <span>новый продукт</span>
+        </a>
 
         {% for object in object_list %}
             <div class="product_record {% if not object.is_active %}not_active{% endif %}">
-                <img src="/media/{{ object.image|default:'products_images/default.jpg' }}"
+                <img src="/media/{{ object.image|default:'products_images/default.png' }}"
                      alt="{{ object.name }}">
                 <div class="product_name">
                     {{ object.name|title }}

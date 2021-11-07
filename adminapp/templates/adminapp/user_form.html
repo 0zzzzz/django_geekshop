@@ -1,16 +1,17 @@
 {% extends 'adminapp/base.html' %}
 
 {% block content %}
-    <div class="login">
+    <div class="admin_block">
+        <a href="{% url 'adminapp:user_list' %}" class="admin_cross"></a>
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Сохранить" class="btn btn-primary">
 
         </form>
-        <a class="btn btn-warning" href="{% url 'adminapp:user_list' %}">
-            К списку пользователей
+{#        <a class="btn btn-warning" href="{% url 'adminapp:user_list' %}">#}
+{#            К списку пользователей#}
             {#            Назад#}
-        </a>
+{#        </a>#}
     </div>
 {% endblock %}

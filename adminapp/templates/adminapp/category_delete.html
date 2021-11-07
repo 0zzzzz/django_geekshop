@@ -1,16 +1,21 @@
 {% extends 'adminapp/base.html' %}
 
 {% block content %}
-    <div class="login">
-        {%  if object.is_active %}
-            Уверены, что хотите удалить категорию {{ object.get_full_name }}?
+    <div class="admin_block">
+        {% if object.is_active %}
+{#            Уверены, что хотите удалить категорию {{ object.get_full_name }}?#}
+            Уверены, что хотите удалить категорию {{ category.name }}?
         {% else %}
             Уверены, что хотите востановить категорию?
         {% endif %}
+        <form method="post">
+            {% if object.is_active %}
+                <label><input type="checkbox" name="del_box" value="True">Удалить полностью</label>
+                <br>
+            {% endif %}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Уверен">
+        </form>
+        <a href="{% url 'adminapp:category_list' %}" class="btn btn-success">Нет</a>
     </div>
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" class="btn btn-danger" value="Уверен">
-    </form>
-    <a href="{% url 'adminapp:category_list' %}" class="btn btn-success">Нет</a>
 {% endblock %}
