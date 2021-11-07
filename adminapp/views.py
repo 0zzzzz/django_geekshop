@@ -209,7 +209,7 @@ def product_delete(request, pk):
         # return redirect(request.META.get('HTTP_REFERER'))
         # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     context = {
-        'category': get_object_or_404(ProductCategory, pk=pk),
+        # 'category': get_object_or_404(ProductCategory, pk=pk),
         'product': get_object_or_404(Product, pk=pk),
         'object': current_product,
     }
