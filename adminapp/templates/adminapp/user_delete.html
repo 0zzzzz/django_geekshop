@@ -1,7 +1,7 @@
 {% extends 'adminapp/base.html' %}
 
 {% block content %}
-    <div class="admin_block">
+    <div class="del_block">
         {% if object.is_active %}
 {#            Уверены, что хотите удалить пользователя {{ object.get_full_name }}?#}
             Уверены, что хотите удалить пользователя {{ user.name }}?
@@ -14,8 +14,8 @@
                 <br>
             {% endif %}
             {% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="Уверен">
+            <input type="submit" class="btn btn-danger col-lg-12" value="Уверен">
         </form>
-        <a href="{% url 'adminapp:user_list' %}" class="btn btn-success">Нет</a>
+        <a href="{% url 'adminapp:user_list' %}" class="btn btn-success col-lg-12">Нет</a>
     </div>
 {% endblock %}

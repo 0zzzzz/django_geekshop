@@ -276,6 +276,8 @@ html, body {
 
 .users_list {
     margin-left: 150px;
+    /*display: flex;*/
+    /*flex-direction: row;*/
 }
 
 .users_list a {
@@ -346,12 +348,20 @@ html, body {
     width: 45px;
 }
 
+/*.user_record .user_role {*/
+/*    display: block;*/
+/*    float: left;*/
+/*    margin-top: 15px;*/
+/*    margin-left: 25px;*/
+/*    width: 125px;*/
+/*}*/
 .user_record .user_role {
     display: block;
     float: left;
-    margin-top: 15px;
+    /* margin-top: 15px; */
     margin-left: 25px;
-    width: 125px;
+    width: 78px;
+    padding-top: 0px;
 }
 
 .user_record .user_lastlogin {
@@ -1977,15 +1987,27 @@ td:first-child {
     box-shadow: 0px 0px 5px rgba(115, 115, 120, 0.64);
 }
 
+/*.user_box {*/
+/*    background: #fff;*/
+/*    border: 1px solid #eaeaea;*/
+/*    border-radius: 25px;*/
+/*    overflow: hidden;*/
+/*    width: 72em;*/
+/*    height: 10em;*/
+/*    margin: 10px;*/
+/*    padding: 10px;*/
+/*    position: relative;*/
+/*    display: block;*/
+/*}*/
 .user_box {
     background: #fff;
     border: 1px solid #eaeaea;
     border-radius: 25px;
     overflow: hidden;
     width: 72em;
-    height: 10em;
+    /* height: 11em; */
     margin: 10px;
-    padding: 10px;
+    padding: -1px 10px;
     position: relative;
     display: block;
 }
@@ -2064,6 +2086,10 @@ td:first-child {
     color: #000000;
     /* width: 100%; */
     font-weight: 600;
+    /*position: absolute;*/
+    /*top: 114px;*/
+    /*right: 173px;*/
+    margin-left: 733px;
 }
 
 .adminadd_button:hover {
@@ -2080,6 +2106,7 @@ td:first-child {
     border-style: solid;
     border-width: 5px;
 }
+
 .admin_cross {
     /* display: block;
     position: fixed;
@@ -2109,7 +2136,22 @@ td:first-child {
     width: 36px;
     height: 36px;
 }
-
 .admin_cross:hover {
     background-image: url(/static/img/edit_cross_bold.png);
+}
+.admin_div {
+    /*float: right;*/
+    margin-right: 0.2em;
+}
+.del_block {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 6px;
+    overflow: hidden;
+    width: 32em;
+    min-width: 500px;
+    margin: auto;
+    padding: 16px;
+    position: relative;
+    display: block;
 }
