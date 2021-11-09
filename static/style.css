@@ -21,6 +21,8 @@ html, body {
     margin: 0 auto;
     width: 1000px;
     height: 600px;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
 }
 
 .product_read img {
@@ -2136,13 +2138,16 @@ td:first-child {
     width: 36px;
     height: 36px;
 }
+
 .admin_cross:hover {
     background-image: url(/static/img/edit_cross_bold.png);
 }
+
 .admin_div {
     /*float: right;*/
     margin-right: 0.2em;
 }
+
 .del_block {
     background: #fff;
     border: 1px solid #eaeaea;

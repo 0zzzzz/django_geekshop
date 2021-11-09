@@ -2,6 +2,7 @@ from django.urls import reverse
 
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
+from django.views.generic import DetailView
 
 from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEditForm
 from authapp.forms import ShopUserRegisterForm
@@ -169,6 +170,11 @@ def product_detail(request, pk):
         'object_list': Product.objects.filter(pk=pk)
     }
     return render(request, 'adminapp/products.html', context)
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'adminapp/product_detail.html'
 
 
 @user_passes_test(lambda u: u.is_superuser)
