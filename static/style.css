@@ -21,7 +21,7 @@ html, body {
     margin: 0 auto;
     width: 1000px;
     height: 600px;
-    /*display: flex;*/
+    display: flex;
     /*justify-content: space-between;*/
 }
 
@@ -36,8 +36,16 @@ html, body {
     display: block;
     margin: 0 auto;
     width: 350px;
+    /*display: flex;*/
+    /*justify-content: center;*/
 }
-
+.product_name{
+    /*display: block;*/
+    /*margin: 0 auto;*/
+    /*width: 350px;*/
+    display: flex;
+    justify-content: center;
+}
 .product_read .summary {
     display: block;
     float: left;
