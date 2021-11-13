@@ -3,7 +3,6 @@
 {% block content %}
     <div class="del_block">
         {% if object.is_active %}
-            {#            Уверены, что хотите удалить категорию {{ object.get_full_name }}?#}
             Уверены, что хотите удалить категорию {{ category.name }}?
         {% else %}
             Уверены, что хотите востановить категорию?
@@ -15,12 +14,10 @@
             {% endif %}
             {% csrf_token %}
             <input type="submit" class="btn-block btn-danger col-lg-12" value="Да">
-
         </form>
         <button onclick="document.location='{% url 'adminapp:category_list' %}'"
                 class="btn-block btn-success col-lg-12">
             Отмена
         </button>
-
     </div>
 {% endblock %}

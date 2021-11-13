@@ -2036,3 +2036,16 @@ td:first-child {
     position: relative;
     display: block;
 }
+
+.paginator_admin {
+    font-weight: bolder;
+    text-decoration: none;
+    color: #000000;
+    width: 230px;
+    margin: 0 auto;
+    justify-content: space-evenly;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+

@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
-from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEditForm, ProductCategoryCreateForm
+from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEditForm, ProductCategoryCreateForm, \
+    ProductCreateForm
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from django.shortcuts import get_object_or_404, render, redirect
@@ -106,52 +107,74 @@ def category_delete(request, pk):
     return render(request, 'adminapp/category_delete.html', context)
 
 
-# class ProductCategoryDeleteView(DeleteView):
-#     model = ProductCategory
-#     template_name = 'adminapp/category_delete.html'
-#     success_url = reverse_lazy('admin:categories')
-#
-#     def delete(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         self.object.is_active = False
-#         self.object.save()
-#
-#         return HttpResponseRedirect(self.get_success_url())
+class ProductsListView(AccessMixin, ListView):
+    model = Product
+    template_name = 'adminapp/products.html'
+    paginate_by = 4
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
+        return context_data
+
+    def get_queryset(self):
+        return Product.objects.filter(category__pk=self.kwargs.get('pk'))
+
+    def get_success_url(self):
+        product_item = Product.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
 class ProductCreateView(AccessMixin, CreateView):
     model = Product
     template_name = 'adminapp/product_form.html'
-    form_class = ProductEditForm
-
-    def get_context_data(self, *args, **kwargs):
-        context_data = super().get_context_data(*args, **kwargs)
-        context_data['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
-        return context_data
-
-    def get_queryset(self):
-        return Product.objects.filter(category__pk=self.kwargs.get('pk'))
+    form_class = ProductCreateForm
 
     def get_success_url(self):
         product_item = Product.objects.get(pk=self.kwargs['pk'])
         return reverse('adminapp:product_list', args=[product_item.category_id])
 
+    # def get(self, *args, **kwargs):
+    #     print('Processing GET request')
+    #     resp = super().get(*args, **kwargs)
+    #     print(resp)
+    #     print('Finished processing GET request')
+    #     return resp
 
-class ProductsListView(AccessMixin, ListView):
-    model = Product
-    template_name = 'adminapp/products.html'
+    # def get_context_data(self, *args, **kwargs):
+    #     context_data = super().get_context_data(**kwargs)
+    #     print(self.form_class)
+    #     self.form_class(
+    #         initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))})
+    #     return context_data
+    # def get_queryset(self):
+    #     print(Product.objects.filter(category__pk=self.kwargs.get('pk')))
+    #     return Product.objects.filter(category__pk=self.kwargs.get('pk'))
 
-    def get_context_data(self, *args, **kwargs):
-        context_data = super().get_context_data(*args, **kwargs)
-        context_data['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
-        return context_data
 
-    def get_queryset(self):
-        return Product.objects.filter(category__pk=self.kwargs.get('pk'))
+# def product_create(request, pk):
+#     title = 'продукт/создание'
+#     category = get_object_or_404(ProductCategory, pk=pk)
+#
+#     if request.method == 'POST':
+#         product_form = ProductCreateForm(request.POST, request.FILES)
+#         if product_form.is_valid():
+#             product_form.save()
+#             return HttpResponseRedirect(reverse('admin:products', args=[pk]))
+#     else:
+#         product_form = ProductCreateForm(initial={'category': category})
+#
+#     content = {'title': title,
+#                'form': product_form,
+#                'category': category
+#                }
+#
+#     return render(request, 'adminapp/product_form.html', content)
 
-    def get_success_url(self):
-        product_item = Product.objects.get(pk=self.kwargs['pk'])
-        return reverse('adminapp:product_list', args=[product_item.category_id])
+
+def get_success_url(self):
+    product_item = Product.objects.get(pk=self.kwargs['pk'])
+    return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
 class ProductUpdateView(AccessMixin, UpdateView):

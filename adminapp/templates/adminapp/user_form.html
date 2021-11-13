@@ -7,11 +7,6 @@
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Сохранить" class="btn-block btn-primary col-lg-12">
-
         </form>
-{#        <a class="btn btn-warning" href="{% url 'adminapp:user_list' %}">#}
-{#            К списку пользователей#}
-            {#            Назад#}
-{#        </a>#}
     </div>
 {% endblock %}

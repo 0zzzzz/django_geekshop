@@ -6,11 +6,6 @@
         <a class="adminadd_button" href={% url 'adminapp:category_create' %}>
             <span>новая категория</span>
         </a>
-        {#        <button class="new_category admin_button">#}
-        {#            <a href={% url 'adminapp:category_create' %}>#}
-        {#                новая категория#}
-        {#            </a>#}
-        {#        </button>#}
         {% for object in object_list %}
             <div class="category_record {% if not object.is_active %}not_active{% endif %}">
                 <div class="category_name">

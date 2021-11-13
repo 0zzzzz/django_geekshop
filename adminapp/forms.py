@@ -8,12 +8,14 @@ class ShopUserAdminEdit(ShopUserEditForm):
     class Meta:
         model = ShopUser
         fields = '__all__'
+        exclude = ('is_active',)
 
 
 class ProductCategoryEditForm(forms.ModelForm):
     class Meta:
         model = ProductCategory
         fields = '__all__'
+        exclude = ('is_active',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,6 +40,19 @@ class ProductEditForm(forms.ModelForm):
 class ProductCategoryCreateForm(forms.ModelForm):
     class Meta:
         model = ProductCategory
+        fields = '__all__'
+        exclude = ('is_active',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+
+
+class ProductCreateForm(forms.ModelForm):
+    class Meta:
+        model = Product
         fields = '__all__'
         exclude = ('is_active',)
 
