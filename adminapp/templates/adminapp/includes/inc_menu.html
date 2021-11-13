@@ -23,13 +23,5 @@
                 категории
             {% endif %}
         </a>
-        {#        {% for object in object_list %}#}
-        <a href="{% url 'adminapp:products_all' %}"
-           class="{% if 'products' in request.resolver_match.url_name %}
-                    active
-                  {% endif %}">
-            все продукты
-        </a>
-        {#        {% endfor %}#}
     </li>
 </ul>

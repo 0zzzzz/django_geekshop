@@ -3,9 +3,11 @@
 {% load media_tags %}
 
 {% block content %}
-    <a class="adminadd_button" href={% url 'adminapp:product_create' %}>
+
+    <a class="adminadd_button" href={% url 'adminapp:product_create' category.pk %}>
         <span>новый продукт</span>
     </a>
+
     <div class="products_list">
         {#            <a href={% if category %}{% url 'adminapp:product_create' category.pk %}{% endif %} class="admin_button">#}
 
