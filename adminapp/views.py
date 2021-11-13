@@ -41,25 +41,29 @@ class UserUpdateView(AccessMixin, UpdateView):
     success_url = reverse_lazy('adminapp:user_list')
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def user_delete(request, pk):
-    current_user = get_object_or_404(ShopUser, pk=pk)
-    if request.method == 'POST':
-        checkbox = request.POST.get('del_box', None)
+class UserDeleteView(AccessMixin, DeleteView):
+    model = ShopUser
+    template_name = 'adminapp/user_delete.html'
+
+    def get_success_url(self):
+        return reverse('adminapp:user_list')
+
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        if request.method == 'POST':
+            checkbox = request.POST.get('del_box', None)
         if checkbox:
-            current_user.delete()
+            self.object = self.get_object()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
         else:
-            if current_user.is_active:
-                current_user.is_active = False
+            self.object = self.get_object()
+            if self.object.is_active:
+                self.object.is_active = False
             else:
-                current_user.is_active = True
-            current_user.save()
-        return HttpResponseRedirect(reverse('adminapp:user_list'))
-    context = {
-        'user': get_object_or_404(ShopUser, pk=pk),
-        'object': current_user,
-    }
-    return render(request, 'adminapp/user_delete.html', context)
+                self.object.is_active = True
+            self.object.save()
+            return HttpResponseRedirect(success_url)
 
 
 class ProductCategoryCreateView(AccessMixin, CreateView):
@@ -86,25 +90,29 @@ class ProductCategoryUpdateView(AccessMixin, UpdateView):
         return context
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def category_delete(request, pk):
-    current_category = get_object_or_404(ProductCategory, pk=pk)
-    if request.method == 'POST':
-        checkbox = request.POST.get('del_box', None)
+class ProductCategoryDeleteView(AccessMixin, DeleteView):
+    model = ProductCategory
+    template_name = 'adminapp/category_delete.html'
+
+    def get_success_url(self):
+        return reverse('adminapp:category_list')
+
+    def delete(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            checkbox = request.POST.get('del_box', None)
         if checkbox:
-            current_category.delete()
+            self.object = self.get_object()
+            success_url = self.get_success_url()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
         else:
-            if current_category.is_active:
-                current_category.is_active = False
+            self.object = self.get_object()
+            if self.object.is_active:
+                self.object.is_active = False
             else:
-                current_category.is_active = True
-            current_category.save()
-        return HttpResponseRedirect(reverse('adminapp:category_list'))
-    context = {
-        'category': get_object_or_404(ProductCategory, pk=pk),
-        'object': current_category,
-    }
-    return render(request, 'adminapp/category_delete.html', context)
+                self.object.is_active = True
+            self.object.save()
+            return HttpResponseRedirect(reverse('adminapp:category_list'))
 
 
 class ProductsListView(AccessMixin, ListView):
@@ -134,43 +142,6 @@ class ProductCreateView(AccessMixin, CreateView):
         product_item = Product.objects.get(pk=self.kwargs['pk'])
         return reverse('adminapp:product_list', args=[product_item.category_id])
 
-    # def get(self, *args, **kwargs):
-    #     print('Processing GET request')
-    #     resp = super().get(*args, **kwargs)
-    #     print(resp)
-    #     print('Finished processing GET request')
-    #     return resp
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context_data = super().get_context_data(**kwargs)
-    #     print(self.form_class)
-    #     self.form_class(
-    #         initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))})
-    #     return context_data
-    # def get_queryset(self):
-    #     print(Product.objects.filter(category__pk=self.kwargs.get('pk')))
-    #     return Product.objects.filter(category__pk=self.kwargs.get('pk'))
-
-
-# def product_create(request, pk):
-#     title = 'продукт/создание'
-#     category = get_object_or_404(ProductCategory, pk=pk)
-#
-#     if request.method == 'POST':
-#         product_form = ProductCreateForm(request.POST, request.FILES)
-#         if product_form.is_valid():
-#             product_form.save()
-#             return HttpResponseRedirect(reverse('admin:products', args=[pk]))
-#     else:
-#         product_form = ProductCreateForm(initial={'category': category})
-#
-#     content = {'title': title,
-#                'form': product_form,
-#                'category': category
-#                }
-#
-#     return render(request, 'adminapp/product_form.html', content)
-
 
 def get_success_url(self):
     product_item = Product.objects.get(pk=self.kwargs['pk'])
@@ -196,13 +167,21 @@ class ProductDeleteView(AccessMixin, DeleteView):
         return reverse('adminapp:product_list', args=[product_item.category_id])
 
     def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if self.object.is_active:
-            self.object.is_active = False
+        if request.method == 'POST':
+            checkbox = request.POST.get('del_box', None)
+        if checkbox:
+            self.object = self.get_object()
+            success_url = self.get_success_url()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
         else:
-            self.object.is_active = True
-        self.object.save()
-        return HttpResponseRedirect(reverse('adminapp:product_list', args=[self.object.category_id]))
+            self.object = self.get_object()
+            if self.object.is_active:
+                self.object.is_active = False
+            else:
+                self.object.is_active = True
+            self.object.save()
+            return HttpResponseRedirect(reverse('adminapp:product_list', args=[self.object.category_id]))
 
 
 class ProductDetailView(AccessMixin, DetailView):
