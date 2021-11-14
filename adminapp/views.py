@@ -17,6 +17,25 @@ class AccessMixin:
         return super().dispatch(request, *args, **kwargs)
 
 
+class DeleteClass:
+    def delete(self, request, *args, **kwargs):
+        success_url = self.get_success_url()
+        if request.method == 'POST':
+            checkbox = request.POST.get('del_box', None)
+        if checkbox:
+            self.object = self.get_object()
+            self.object.delete()
+            return HttpResponseRedirect(success_url)
+        else:
+            self.object = self.get_object()
+            if self.object.is_active:
+                self.object.is_active = False
+            else:
+                self.object.is_active = True
+            self.object.save()
+            return HttpResponseRedirect(success_url)
+
+
 class UserCreateView(AccessMixin, CreateView):
     model = ShopUser
     template_name = 'adminapp/user_form.html'
@@ -41,29 +60,12 @@ class UserUpdateView(AccessMixin, UpdateView):
     success_url = reverse_lazy('adminapp:user_list')
 
 
-class UserDeleteView(AccessMixin, DeleteView):
+class UserDeleteView(AccessMixin, DeleteClass, DeleteView, ):
     model = ShopUser
     template_name = 'adminapp/user_delete.html'
 
     def get_success_url(self):
         return reverse('adminapp:user_list')
-
-    def delete(self, request, *args, **kwargs):
-        success_url = self.get_success_url()
-        if request.method == 'POST':
-            checkbox = request.POST.get('del_box', None)
-        if checkbox:
-            self.object = self.get_object()
-            self.object.delete()
-            return HttpResponseRedirect(success_url)
-        else:
-            self.object = self.get_object()
-            if self.object.is_active:
-                self.object.is_active = False
-            else:
-                self.object.is_active = True
-            self.object.save()
-            return HttpResponseRedirect(success_url)
 
 
 class ProductCategoryCreateView(AccessMixin, CreateView):
@@ -76,6 +78,11 @@ class ProductCategoryCreateView(AccessMixin, CreateView):
 class ProductCategoriesListView(AccessMixin, ListView):
     model = ProductCategory
     template_name = 'adminapp/categories.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['object_list'] = ProductCategory.objects.all().order_by('-is_active')
+        return context_data
 
 
 class ProductCategoryUpdateView(AccessMixin, UpdateView):
@@ -90,29 +97,12 @@ class ProductCategoryUpdateView(AccessMixin, UpdateView):
         return context
 
 
-class ProductCategoryDeleteView(AccessMixin, DeleteView):
+class ProductCategoryDeleteView(AccessMixin, DeleteClass, DeleteView):
     model = ProductCategory
     template_name = 'adminapp/category_delete.html'
 
     def get_success_url(self):
         return reverse('adminapp:category_list')
-
-    def delete(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            checkbox = request.POST.get('del_box', None)
-        if checkbox:
-            self.object = self.get_object()
-            success_url = self.get_success_url()
-            self.object.delete()
-            return HttpResponseRedirect(success_url)
-        else:
-            self.object = self.get_object()
-            if self.object.is_active:
-                self.object.is_active = False
-            else:
-                self.object.is_active = True
-            self.object.save()
-            return HttpResponseRedirect(reverse('adminapp:category_list'))
 
 
 class ProductsListView(AccessMixin, ListView):
@@ -123,6 +113,7 @@ class ProductsListView(AccessMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
+        context_data['object_list'] = Product.objects.filter(category=self.kwargs.get('pk')).order_by('-is_active')[:4]
         return context_data
 
     def get_queryset(self):
@@ -148,7 +139,6 @@ class ProductCreateView(AccessMixin, CreateView):
         return render(request, 'adminapp/product_form.html', {'form': form})
 
 
-
 class ProductUpdateView(AccessMixin, UpdateView):
     model = Product
     template_name = 'adminapp/product_form.html'
@@ -159,30 +149,13 @@ class ProductUpdateView(AccessMixin, UpdateView):
         return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
-class ProductDeleteView(AccessMixin, DeleteView):
+class ProductDeleteView(AccessMixin, DeleteClass, DeleteView):
     model = Product
     template_name = 'adminapp/product_delete.html'
 
     def get_success_url(self):
         product_item = Product.objects.get(pk=self.kwargs['pk'])
         return reverse('adminapp:product_list', args=[product_item.category_id])
-
-    def delete(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            checkbox = request.POST.get('del_box', None)
-        if checkbox:
-            self.object = self.get_object()
-            success_url = self.get_success_url()
-            self.object.delete()
-            return HttpResponseRedirect(success_url)
-        else:
-            self.object = self.get_object()
-            if self.object.is_active:
-                self.object.is_active = False
-            else:
-                self.object.is_active = True
-            self.object.save()
-            return HttpResponseRedirect(reverse('adminapp:product_list', args=[self.object.category_id]))
 
 
 class ProductDetailView(AccessMixin, DetailView):
