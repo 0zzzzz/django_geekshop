@@ -113,7 +113,7 @@ class ProductsListView(AccessMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
-        context_data['object_list'] = Product.objects.filter(category=self.kwargs.get('pk')).order_by('-is_active')[:4]
+        # context_data['object_list'] = Product.objects.filter(category=self.kwargs.get('pk')).order_by('-is_active')[:4]
         return context_data
 
     def get_queryset(self):

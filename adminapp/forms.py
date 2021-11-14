@@ -54,7 +54,6 @@ class ProductCreateForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = '__all__'
-        exclude = ('is_active',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

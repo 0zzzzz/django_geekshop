@@ -3,6 +3,7 @@
 {% load media_tags %}
 
 {% block content %}
+
     {% include 'adminapp/includes/inc_paginator.html' %}
 
     <a class="adminadd_button" href={% url 'adminapp:product_create' category.pk %}>
