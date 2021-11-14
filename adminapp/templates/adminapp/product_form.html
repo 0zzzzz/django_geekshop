@@ -2,8 +2,7 @@
 
 {% block content %}
     <div class="admin_block">
-{#        <a class="admin_cross" href={% url 'adminapp:product_list' object.category.pk %} ></a>#}
-        <a class="admin_cross" href={% url 'adminapp:product_list' 1 %} ></a>
+        <a class="admin_cross" href={% url 'adminapp:product_list' form.category.value %} ></a>
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}

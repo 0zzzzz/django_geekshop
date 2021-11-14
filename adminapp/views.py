@@ -142,10 +142,11 @@ class ProductCreateView(AccessMixin, CreateView):
         product_item = Product.objects.get(pk=self.kwargs['pk'])
         return reverse('adminapp:product_list', args=[product_item.category_id])
 
+    def get(self, request, **kwargs):
+        form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
+        print(form['category'])
+        return render(request, 'adminapp/product_form.html', {'form': form})
 
-def get_success_url(self):
-    product_item = Product.objects.get(pk=self.kwargs['pk'])
-    return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
 class ProductUpdateView(AccessMixin, UpdateView):
