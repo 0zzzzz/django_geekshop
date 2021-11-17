@@ -10,11 +10,9 @@ from authapp.services import send_verify_email
 def login(request):
     login_form = ShopUserLoginForm(data=request.POST or None)
     next_param = request.GET['next'] if 'next' in request.GET.keys() else ''
-
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
-
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
@@ -22,7 +20,6 @@ def login(request):
                 return HttpResponseRedirect(request.POST['next'])
             else:
                 return HttpResponseRedirect(reverse('index'))
-
     context = {
         'login_form': login_form,
         'next': next_param,
@@ -71,5 +68,3 @@ def verify(request, email, key):
             user.activate_user()
             auth.login(request, user)
     return render(request, 'authapp/register_result.html')
-
-
