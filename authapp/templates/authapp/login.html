@@ -17,4 +17,6 @@
     <hr>
     <input class="auth_button" type="button" value="Зарегестрироваться"
            onClick="window.location='{% url 'auth:register' %}'"/>
+    <input class="auth_button" type="button" value="Войти через VK"
+           onClick="window.location='{% url 'social:begin' 'vk-oauth2' %}?next=/'"/>
 {% endblock %}

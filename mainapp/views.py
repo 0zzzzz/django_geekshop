@@ -62,7 +62,6 @@ def products(request, pk=None, page=1):
             'links_menu': links_menu,
             'title': 'Продукты',
             'category': category_item,
-            # 'products': products_list,
             'products': products_paginator,
         }
         return render(request, 'mainapp/products_list.html', context=context)
