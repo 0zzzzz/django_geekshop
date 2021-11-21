@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
-from authapp.models import ShopUser
+from authapp.models import ShopUser, ShopUserProfile
 from datetime import datetime, timedelta
 import pytz
 from django.conf import settings
@@ -77,3 +77,15 @@ class ShopUserEditForm(UserChangeForm):
     #     if ShopUser.objects.filter(email=data).exists():
     #         raise forms.ValidationError('Такой e-mail уже существует')
     #     return data
+
+
+class ShopUserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = ShopUserProfile
+        exclude = ('user',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
