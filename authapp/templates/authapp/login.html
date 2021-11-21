@@ -17,6 +17,9 @@
     <hr>
     <input class="auth_button" type="button" value="Зарегестрироваться"
            onClick="window.location='{% url 'auth:register' %}'"/>
+{#    <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/" class="auth_button">Войти через <span class="text-primary">VK</span></a>#}
     <input class="auth_button" type="button" value="Войти через VK"
            onClick="window.location='{% url 'social:begin' 'vk-oauth2' %}?next=/'"/>
+    <input class="auth_button" type="button" value="Войти через Google"
+           onClick="window.location='{% url 'social:begin' 'google-oauth2' %}?next=/'">
 {% endblock %}

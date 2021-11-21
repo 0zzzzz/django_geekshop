@@ -3,7 +3,7 @@
 from django.db import migrations
 
 
-def handle(apps, schema_editor):
+def handle(apps, *args):
     users = apps.get_model('authapp', 'ShopUser')
     profile = apps.get_model('authapp', 'ShopUserProfile')
     for user in users.objects.all():
