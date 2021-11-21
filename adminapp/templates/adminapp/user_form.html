@@ -5,7 +5,9 @@
         <a href="{% url 'adminapp:user_list' %}" class="admin_cross"></a>
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form }}
+{#            {{ user_form.as_p }}#}
+{#            {{ profile_form.as_p }}#}
             <input type="submit" value="Сохранить" class="btn-block btn-primary col-lg-12">
         </form>
     </div>

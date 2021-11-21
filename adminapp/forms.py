@@ -1,5 +1,5 @@
-from authapp.forms import ShopUserEditForm
-from authapp.models import ShopUser
+from authapp.forms import ShopUserEditForm, ShopUserProfileEditForm
+from authapp.models import ShopUser, ShopUserProfile
 from mainapp.models import ProductCategory, Product
 from django import forms
 
@@ -7,6 +7,13 @@ from django import forms
 class ShopUserAdminEdit(ShopUserEditForm):
     class Meta:
         model = ShopUser
+        fields = '__all__'
+        exclude = ('is_active',)
+
+
+class ShopUserProfileEdit(ShopUserProfileEditForm):
+    class Meta:
+        model = ShopUserProfile
         fields = '__all__'
         exclude = ('is_active',)
 

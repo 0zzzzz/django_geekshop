@@ -1,5 +1,4 @@
 from datetime import datetime
-
 import requests
 from social_core.exceptions import AuthForbidden
 
@@ -22,6 +21,7 @@ def save_user_profile(backend, user, response, *args, **kwargs):
         return
 
     data_json = response.json()['response'][0]
+    print(data_json)
 
     if 'sex' in data_json:
         if data_json['sex'] == 1:
@@ -44,7 +44,14 @@ def save_user_profile(backend, user, response, *args, **kwargs):
         user.age = age
 
     if 'photo_max_orig' in data_json:
-        user.avatar = data_json['photo_max_orig']
+        url = data_json['photo_max_orig']
+        file_name = f'users_avatars/{data_json["id"]}{data_json["last_name"]}.jpg'
+        file_address = f'media/{file_name}'
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(file_address, 'wb') as img_file:
+                img_file.write(response.content)
+        user.avatar = file_name
 
     user.save()
 

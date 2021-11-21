@@ -1,13 +1,13 @@
-from django.urls import reverse, reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
-from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, CreateView, DeleteView, UpdateView
 from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEditForm, ProductCategoryCreateForm, \
-    ProductCreateForm
+    ProductCreateForm, ShopUserProfileEdit
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
-from django.shortcuts import get_object_or_404, render, redirect
 from mainapp.models import Product, ProductCategory
 
 
@@ -56,8 +56,20 @@ class UserListView(AccessMixin, ListView):
 class UserUpdateView(AccessMixin, UpdateView):
     model = ShopUser
     template_name = 'adminapp/user_form.html'
+    # user_form_class = ShopUserAdminEdit
+    # profile_form_class = ShopUserProfileEdit
     form_class = ShopUserAdminEdit
     success_url = reverse_lazy('adminapp:user_list')
+
+    # def get(self, request, pk):
+    #     user_form = self.user_form_class(None)
+    #     profile_form = self.profile_form_class(None)
+    #     return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
+    #
+    # def post(self, request):
+    #     user_form = self.user_form_class(request.POST)
+    #     profile_form = self.profile_form_class(request.POST)
+    #     return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
 
 
 class UserDeleteView(AccessMixin, DeleteClass, DeleteView, ):
@@ -113,7 +125,6 @@ class ProductsListView(AccessMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['category'] = get_object_or_404(ProductCategory, pk=self.kwargs.get('pk'))
-        # context_data['object_list'] = Product.objects.filter(category=self.kwargs.get('pk')).order_by('-is_active')[:4]
         return context_data
 
     def get_queryset(self):
