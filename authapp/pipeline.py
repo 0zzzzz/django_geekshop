@@ -1,25 +1,20 @@
 from datetime import datetime
 import requests
+from django.conf import settings
 from social_core.exceptions import AuthForbidden
-
 from authapp.models import ShopUserProfile
 
 
 def save_user_profile(backend, user, response, *args, **kwargs):
     if backend.name != 'vk-oauth2':
         return
-
     url_method = 'https://api.vk.com/method/'
     access_token = response.get('access_token')
     fields = ','.join(['bdate', 'sex', 'about', 'photo_max_orig'])
-
     api_url = f'{url_method}users.get?fields={fields}&access_token={access_token}&v=5.131'
-
     response = requests.get(api_url)
-
     if response.status_code != 200:
         return
-
     data_json = response.json()['response'][0]
     print(data_json)
 
@@ -45,13 +40,12 @@ def save_user_profile(backend, user, response, *args, **kwargs):
 
     if 'photo_max_orig' in data_json:
         url = data_json['photo_max_orig']
-        file_name = f'users_avatars/{data_json["id"]}{data_json["last_name"]}.jpg'
-        file_address = f'media/{file_name}'
+        db_file_path = f'users_avatars/{data_json["id"]}_{data_json["first_name"]}_{data_json["last_name"]}.{url.split(".")[-1]}'
+        file_path = f'{settings.MEDIA_ROOT}/{db_file_path}'
         response = requests.get(url)
         if response.status_code == 200:
-            with open(file_address, 'wb') as img_file:
-                img_file.write(response.content)
-        user.avatar = file_name
+            with open(file_path, 'wb') as avatar:
+                avatar.write(response.content)
+        user.avatar = db_file_path
 
     user.save()
-
