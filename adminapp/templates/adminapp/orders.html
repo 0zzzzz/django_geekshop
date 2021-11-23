@@ -45,8 +45,12 @@
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'ordersapp:delete' object.pk %}">
-                                удалить
+                            <a href="{% url 'adminapp:orders_delete' object.pk %}">
+                                {% if object.is_active %}
+                                    удалить
+                                {% else %}
+                                    восстановить
+                                {% endif %}
                             </a>
                         </td>
                     </tr>

@@ -1,0 +1,41 @@
+{% extends 'adminapp/base.html' %}
+
+{% block content %}
+    <div class="del_block">
+        {% if object.is_active %}
+            Уверены, что хотите заказ? {{ user.name }}?
+        {% else %}
+            Уверены, что хотите востановить заказ?
+        {% endif %}
+        <form method="post">
+            {% if object.is_active %}
+                <label><input type="checkbox" name="del_box" value="True">Удалить полностью</label>
+                <br>
+            {% endif %}
+            {% csrf_token %}
+            <input type="submit" class="btn-block btn-danger col-lg-12" value="Да">
+        </form>
+        <button onclick="document.location='{% url 'adminapp:orders_list' user.id %}'"
+                class="btn-block btn-success col-lg-12">
+            Отмена
+        </button>
+    </div>
+{% endblock %}
+
+{#{% block content %}#}
+{#    <div class="del_block">#}
+{#        {% if object.is_active %}#}
+{#            Уверены, что хотите заказ? {{ user.name }}?#}
+{#        {% else %}#}
+{#            Уверены, что хотите востановить заказ?#}
+{#        {% endif %}#}
+{#        {% include 'ordersapp/includes/inc_order_summary.html' %}#}
+{#        <form action="{% url 'ordersapp:delete' object.pk %}" method="post">#}
+{#            {% csrf_token %}#}
+{#            <input class="btn btn-danger" type="submit" value="удалить">#}
+{#        </form>#}
+{#        <button class="btn btn-success">#}
+{#            <a href="{% url 'ordersapp:list' %}">отмена</a>#}
+{#        </button>#}
+{#    </div>#}
+{#{% endblock %}#}

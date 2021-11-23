@@ -147,7 +147,6 @@ class ProductCreateView(AccessMixin, CreateView):
 
     def get(self, request, **kwargs):
         form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
-        print(form['category'])
         return render(request, 'adminapp/product_form.html', {'form': form})
 
 
@@ -175,21 +174,13 @@ class ProductDetailView(AccessMixin, DetailView):
     template_name = 'adminapp/product_detail.html'
 
 
-
-
 #
-
-
-
-
-
-
-
 
 
 class OrdersListView(AccessMixin, ListView):
     model = Order
     template_name = 'adminapp/orders.html'
+
     # paginate_by = 4
 
     def get_context_data(self, *args, **kwargs):
@@ -225,19 +216,22 @@ class OrdersUpdateView(AccessMixin, UpdateView):
     template_name = 'adminapp/product_form.html'
     form_class = ProductEditForm
 
-
     def get_success_url(self):
         product_item = Product.objects.get(pk=self.kwargs['pk'])
         return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
 class OrdersDeleteView(AccessMixin, DeleteClass, DeleteView):
-    model = Product
-    template_name = 'adminapp/product_delete.html'
+    model = Order
+    template_name = 'adminapp/order_delete.html'
 
     def get_success_url(self):
-        product_item = Product.objects.get(pk=self.kwargs['pk'])
-        return reverse('adminapp:product_list', args=[product_item.category_id])
+        order_item = Order.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:orders_list', args=[order_item.user_id])
+
+    # def get_success_url(self):
+    #     product_item = Product.objects.get(pk=self.kwargs['pk'])
+    #     return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
 class OrdersDetailView(AccessMixin, DetailView):

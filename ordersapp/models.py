@@ -47,12 +47,12 @@ class Order(models.Model):
         _items = self.orderitems.select_related()
         return sum(list(map(lambda x: x.product_cost, _items)))
 
-    def delete(self, *args, **kwargs):
-        for item in self.orderitems.select_related():
-            item.product.quantity += item.quantity
-            item.product.save()
-        self.is_active = False
-        self.save()
+    # def delete(self, *args, **kwargs):
+    #     for item in self.orderitems.select_related():
+    #         item.product.quantity += item.quantity
+    #         item.product.save()
+    #     self.is_active = False
+    #     self.save()
 
 
 class OrderItem(models.Model):
