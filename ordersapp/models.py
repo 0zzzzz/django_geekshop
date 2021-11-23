@@ -22,14 +22,26 @@ class Order(models.Model):
     )
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUSES, default=STATUS_FORMING, max_length=3)
+    status = models.CharField(choices=STATUSES, default=STATUS_FORMING, max_length=3, verbose_name='статус')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name = 'заказ'
+        verbose_name_plural = 'заказы'
+
+    def __str__(self):
+        return 'Текущий заказ: {}'.format(self.id)
+
     def get_total_quantity(self):
         _items = self.orderitems.select_related()
         return sum(list(map(lambda x: x.quantity, _items)))
+
+    def get_product_type_quantity(self):
+        items = self.orderitems.select_related()
+        return len(items)
 
     def get_total_cost(self):
         _items = self.orderitems.select_related()

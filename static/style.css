@@ -707,6 +707,7 @@ px
 }
 
 .menu a {
+    list-style-type: none;
     color: #8c8c8c;
     font-size: 14px;
     font-weight: 700;
@@ -723,6 +724,7 @@ px
 }
 
 .menu a:hover {
+    list-style-type: none;
     color: #212121;
     font-weight: 700;
     border-bottom: 3px solid #212121;
@@ -2049,16 +2051,23 @@ td:first-child {
     flex-direction: column;
 }
 
-.pagination>li>a:hover {
+.pagination > li > a:hover {
     color: #404040;
 }
-.pagination>li>a {
+
+.pagination > li > a {
     position: relative;
     float: left;
     padding: 6px 12px;
     border: none;
     color: #000000;
 }
-.google_button{
-        align-content: center;
+
+.google_button {
+    align-content: center;
+}
+
+.order_container {
+    margin: 25px auto;
+    width: 700px;
 }
