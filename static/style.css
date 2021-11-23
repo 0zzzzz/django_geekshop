@@ -2071,3 +2071,11 @@ td:first-child {
     margin: 25px auto;
     width: 700px;
 }
+
+.order_record {
+    padding-top: 1px;
+}
+
+.order_img {
+    height: 100px;
+}

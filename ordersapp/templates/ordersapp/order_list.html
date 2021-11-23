@@ -6,6 +6,7 @@
     <div class="h2 text-center head">
         Ваши заказы,
         {% if user.first_name %}
+            {{ user.username }}
             {{ user.first_name|title }}
         {% else %}
             Пользователь
@@ -25,8 +26,8 @@
             {% if item.is_active %}
                 <tr>
                     <td class="td1 orders_list">{{ item.pk }}</td>
-                    <td>{{ item.created|date:"Y-m-d H:i:s" }}</td>
-                    <td>{{ item.updated|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ item.created_at|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ item.updated_at|date:"Y-m-d H:i:s" }}</td>
                     <td>{{ item.get_status_display }}</td>
                     <td>
                         <a href="{% url 'ordersapp:read' item.pk %}">

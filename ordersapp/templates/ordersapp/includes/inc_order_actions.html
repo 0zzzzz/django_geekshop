@@ -1,7 +1,6 @@
 {% if object.status == 'FM' %}
    <button class="btn btn-warning btn-round form-control last">
-{#       <a href="{% url 'ordersapp:order_forming_complete' object.pk %}">#}
-                  <a href="#">
+       <a href="{% url 'ordersapp:forming_complete' object.pk %}">
            совершить покупку
        </a>
    </button>
@@ -17,4 +16,3 @@
 <button class="btn btn-default btn-round form-control last">
    <a href="{% url 'index' %}">на главную</a>
 </button>
-
