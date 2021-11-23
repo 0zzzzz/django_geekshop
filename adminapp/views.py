@@ -9,6 +9,7 @@ from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEd
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from mainapp.models import Product, ProductCategory
+from ordersapp.models import Order
 
 
 class AccessMixin:
@@ -172,3 +173,73 @@ class ProductDeleteView(AccessMixin, DeleteClass, DeleteView):
 class ProductDetailView(AccessMixin, DetailView):
     model = Product
     template_name = 'adminapp/product_detail.html'
+
+
+
+
+#
+
+
+
+
+
+
+
+
+
+class OrdersListView(AccessMixin, ListView):
+    model = Order
+    template_name = 'adminapp/orders.html'
+    # paginate_by = 4
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['object_list'] = Order.objects.filter(user_id=self.kwargs.get('pk')).order_by('-is_active')
+        return context_data
+
+    def get_queryset(self):
+        return Order.objects.filter(user_id=self.kwargs.get('pk'))
+
+    # def get_success_url(self):
+    #     order_item = Order.objects.get(pk=self.kwargs['pk'])
+    #     return reverse('adminapp:orders_list', args=[order_item.category_id])
+
+
+# class OrdersCreateView(AccessMixin, CreateView):
+#     model = Order
+#     template_name = 'adminapp/product_form.html'
+#     form_class = ProductCreateForm
+#
+#     def get_success_url(self):
+#         product_item = Product.objects.get(pk=self.kwargs['pk'])
+#         return reverse('adminapp:product_list', args=[product_item.category_id])
+#
+#     def get(self, request, **kwargs):
+#         form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
+#         print(form['category'])
+#         return render(request, 'adminapp/product_form.html', {'form': form})
+
+
+class OrdersUpdateView(AccessMixin, UpdateView):
+    model = Order
+    template_name = 'adminapp/product_form.html'
+    form_class = ProductEditForm
+
+
+    def get_success_url(self):
+        product_item = Product.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:product_list', args=[product_item.category_id])
+
+
+class OrdersDeleteView(AccessMixin, DeleteClass, DeleteView):
+    model = Product
+    template_name = 'adminapp/product_delete.html'
+
+    def get_success_url(self):
+        product_item = Product.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:product_list', args=[product_item.category_id])
+
+
+class OrdersDetailView(AccessMixin, DetailView):
+    model = Order
+    template_name = 'adminapp/orders_detail.html'

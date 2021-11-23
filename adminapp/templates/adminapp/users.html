@@ -19,6 +19,9 @@
                         пользователь
                     {% endif %}
                     <br>
+                    <a class="admin_button" href={% url 'adminapp:orders_list' object.pk %}>
+                        заказы
+                    </a>
                     <a class="admin_button" href={% url 'adminapp:user_update' object.pk %}>
                         редактировать
                     </a>

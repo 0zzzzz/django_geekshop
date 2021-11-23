@@ -43,12 +43,15 @@ class OrderCreateView(CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         orderitems = context['orderitems']
+
         with transaction.atomic():
             form.instance.user = self.request.user
             self.object = form.save()
             if orderitems.is_valid():
+                basket_items = Basket.objects.filter(user=self.request.user)
                 orderitems.instance = self.object
                 orderitems.save()
+                basket_items.delete()
         if self.object.get_total_cost() == 0:
             self.object.delete()
         return super().form_valid(form)

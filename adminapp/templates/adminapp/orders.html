@@ -1,0 +1,58 @@
+{% extends 'adminapp/base.html' %}
+{% load static %}
+{% load media_tags %}
+
+{% block content %}
+
+    {#    {% include 'adminapp/includes/inc_paginator.html' %}#}
+
+    {#    <a class="adminadd_button" href={% url 'adminapp:orders_list' category.pk %}>#}
+    {#        <span>новый продукт</span>#}
+    {#    </a>#}
+    {#        <a href="{% url 'adminapp:orders_list' object.pk %}">#}
+    {#            к списку заказов#}
+    {#        </a>#}
+
+    <div class="admin_block">
+        <div class="products_list_admin">
+            <a class="admin_cross" href={% url 'adminapp:user_list' %}></a>
+            <table class="table orders_list">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Активен</th>
+                    <th>Создан</th>
+                    <th>Обновлен</th>
+                    <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td class="td1 orders_list">{{ object.pk }}</td>
+                        <td>{{ object.is_active }}</td>
+                        <td>{{ object.created_at|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ object.updated_at|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ object.get_status_display }}</td>
+                        <td>
+                            <a href="{% url 'admin_views:orders_detail' object.pk %}">
+                                посмотреть
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'ordersapp:update' object.pk %}">
+                                редактировать
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'ordersapp:delete' object.pk %}">
+                                удалить
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
