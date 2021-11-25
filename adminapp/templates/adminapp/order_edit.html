@@ -4,7 +4,8 @@
 {% block content %}
     <div class="admin_block">
         <div class="products_list_admin">
-                {% include 'adminapp/includes/inc_order_summary.html' %}
+            <a class="admin_cross" href={% url 'adminapp:orders_list' user.id %}></a>
+            {% include 'adminapp/includes/inc_order_summary.html' %}
             <form action="" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
@@ -39,7 +40,16 @@
                 </table>
                 <button type="submit" value="сохранить" class="btn btn-default btn-round form-control last">сохранить
                 </button>
-                {% include 'ordersapp/includes/inc_order_actions.html' %}
+                <button class="btn btn-default btn-round form-control last">
+                <a href="{% url 'adminapp:orders_delete' object.pk %}">
+                    {% if object.is_active %}
+                        удалить
+                    {% else %}
+                        восстановить
+                    {% endif %}
+                </a>
+            </button>
+{#                {% include 'ordersapp/includes/inc_order_actions.html' %}#}
             </form>
         </div>
     </div>

@@ -206,7 +206,6 @@ class OrderUpdateView(AccessMixin, UpdateView):
     model = Order
     fields = []
     template_name = 'adminapp/order_edit.html'
-    # success_url = reverse_lazy('adminapp:orders_list')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -243,11 +242,22 @@ class OrderDeleteView(AccessMixin, DeleteClass, DeleteView):
         order_item = Order.objects.get(pk=self.kwargs['pk'])
         return reverse('adminapp:orders_list', args=[order_item.user_id])
 
-    # def get_success_url(self):
-    #     product_item = Product.objects.get(pk=self.kwargs['pk'])
-    #     return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
 class OrderDetailView(AccessMixin, DetailView):
     model = Order
     template_name = 'adminapp/order_detail.html'
+
+
+def order_forming_complete(request, pk):
+    # print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    # print(pk)
+    # print(Order.objects.filter(pk=pk).get())
+    #
+    # print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    order_item = Order.objects.filter(pk=pk).get()
+    order = get_object_or_404(Order, pk=pk)
+    order.status = Order.STATUS_SEND_TO_PROCEED
+    order.save()
+    return HttpResponseRedirect(reverse('adminapp:orders_list', args=[order_item.user_id]))
+

@@ -5,7 +5,7 @@
 {% block content %}
     <div class="admin_block">
         <div class="products_list_admin">
-            <a class="admin_cross" href={% url 'adminapp:user_list' %}></a>
+            <a class="admin_cross" href={% url 'adminapp:orders_list' user.id %}></a>
             <div>
                 {% include 'adminapp/includes/inc_order_summary.html' %}
             </div>
@@ -30,7 +30,7 @@
                 </div>
             {% endfor %}
             <button class="btn btn-warning btn-round form-control last">
-                <a href="{% url 'ordersapp:forming_complete' object.pk %}">
+                <a href="{% url 'adminapp:orders_forming_complete' object.pk %}">
                     совершить покупку
                 </a>
             </button>
