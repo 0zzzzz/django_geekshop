@@ -6,7 +6,7 @@
     {% include 'ordersapp/includes/inc_order_summary.html' %}
         {% for item in object.orderitems.select_related %}
             <div class="order_record">
-                <img class="order_img" src="/media/{{ item.product.image }}"
+                <img  src="/media/{{ item.product.image }}"
 {#                <img src="{{ item.product.image|media_folder_products }}"#}
                      alt="{{ item.product.short_desc }}">
                 <span class="category_name">

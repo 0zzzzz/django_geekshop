@@ -2075,11 +2075,10 @@ td:first-child {
 .order_record {
     padding-top: 1px;
 }
-
-.order_img {
+.order_record img {
     height: 100px;
 }
 .products_list_admin {
-    display: flex;
+    display: column;
     flex-wrap: wrap;
 }

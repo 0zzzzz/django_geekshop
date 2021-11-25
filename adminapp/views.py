@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.db import transaction
+from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
@@ -8,8 +10,10 @@ from adminapp.forms import ShopUserAdminEdit, ProductCategoryEditForm, ProductEd
     ProductCreateForm, ShopUserProfileEdit
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
+from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
-from ordersapp.models import Order
+from ordersapp.forms import OrderItemForm
+from ordersapp.models import Order, OrderItem
 
 
 class AccessMixin:
@@ -57,20 +61,8 @@ class UserListView(AccessMixin, ListView):
 class UserUpdateView(AccessMixin, UpdateView):
     model = ShopUser
     template_name = 'adminapp/user_form.html'
-    # user_form_class = ShopUserAdminEdit
-    # profile_form_class = ShopUserProfileEdit
     form_class = ShopUserAdminEdit
     success_url = reverse_lazy('adminapp:user_list')
-
-    # def get(self, request, pk):
-    #     user_form = self.user_form_class(None)
-    #     profile_form = self.profile_form_class(None)
-    #     return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
-    #
-    # def post(self, request):
-    #     user_form = self.user_form_class(request.POST)
-    #     profile_form = self.profile_form_class(request.POST)
-    #     return render(request, self.template_name, {'user_form': user_form, 'profile_form': profile_form})
 
 
 class UserDeleteView(AccessMixin, DeleteClass, DeleteView, ):
@@ -174,14 +166,9 @@ class ProductDetailView(AccessMixin, DetailView):
     template_name = 'adminapp/product_detail.html'
 
 
-#
-
-
 class OrdersListView(AccessMixin, ListView):
     model = Order
     template_name = 'adminapp/orders.html'
-
-    # paginate_by = 4
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
@@ -191,37 +178,64 @@ class OrdersListView(AccessMixin, ListView):
     def get_queryset(self):
         return Order.objects.filter(user_id=self.kwargs.get('pk'))
 
+    # class OrdersCreateView(AccessMixin, CreateView):
+    #     model = Order
+    #     template_name = 'adminapp/product_form.html'
+    #     form_class = ProductCreateForm
+    #
+    #     def get_success_url(self):
+    #         product_item = Product.objects.get(pk=self.kwargs['pk'])
+    #         return reverse('adminapp:product_list', args=[product_item.category_id])
+    #
+    #     def get(self, request, **kwargs):
+    #         form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
+    #         print(form['category'])
+    #         return render(request, 'adminapp/product_form.html', {'form': form})
+
+    # class OrdersUpdateView(AccessMixin, UpdateView):
+    # model = Order
+    # template_name = 'adminapp/order_edit.html'
+    # form_class = ProductEditForm
+    #
     # def get_success_url(self):
-    #     order_item = Order.objects.get(pk=self.kwargs['pk'])
-    #     return reverse('adminapp:orders_list', args=[order_item.category_id])
+    #     product_item = Product.objects.get(pk=self.kwargs['pk'])
+    #     return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
-# class OrdersCreateView(AccessMixin, CreateView):
-#     model = Order
-#     template_name = 'adminapp/product_form.html'
-#     form_class = ProductCreateForm
-#
-#     def get_success_url(self):
-#         product_item = Product.objects.get(pk=self.kwargs['pk'])
-#         return reverse('adminapp:product_list', args=[product_item.category_id])
-#
-#     def get(self, request, **kwargs):
-#         form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
-#         print(form['category'])
-#         return render(request, 'adminapp/product_form.html', {'form': form})
-
-
-class OrdersUpdateView(AccessMixin, UpdateView):
+class OrderUpdateView(AccessMixin, UpdateView):
     model = Order
-    template_name = 'adminapp/product_form.html'
-    form_class = ProductEditForm
+    fields = []
+    template_name = 'adminapp/order_edit.html'
+    # success_url = reverse_lazy('adminapp:orders_list')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        OrderFormSet = inlineformset_factory(Order, OrderItem, OrderItemForm, extra=1)
+        if self.request.POST:
+            formset = OrderFormSet(self.request.POST, instance=self.object)
+        else:
+            formset = OrderFormSet(instance=self.object)
+        context_data['orderitems'] = formset
+        return context_data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        orderitems = context['orderitems']
+        with transaction.atomic():
+            self.object = form.save()
+            if orderitems.is_valid():
+                orderitems.instance = self.object
+                orderitems.save()
+        if self.object.get_total_cost() == 0:
+            self.object.delete()
+        return super().form_valid(form)
 
     def get_success_url(self):
-        product_item = Product.objects.get(pk=self.kwargs['pk'])
-        return reverse('adminapp:product_list', args=[product_item.category_id])
+        order_item = Order.objects.get(pk=self.kwargs['pk'])
+        return reverse('adminapp:orders_list', args=[order_item.user_id])
 
 
-class OrdersDeleteView(AccessMixin, DeleteClass, DeleteView):
+class OrderDeleteView(AccessMixin, DeleteClass, DeleteView):
     model = Order
     template_name = 'adminapp/order_delete.html'
 
@@ -234,6 +248,6 @@ class OrdersDeleteView(AccessMixin, DeleteClass, DeleteView):
     #     return reverse('adminapp:product_list', args=[product_item.category_id])
 
 
-class OrdersDetailView(AccessMixin, DetailView):
+class OrderDetailView(AccessMixin, DetailView):
     model = Order
-    template_name = 'adminapp/orders_detail.html'
+    template_name = 'adminapp/order_detail.html'
