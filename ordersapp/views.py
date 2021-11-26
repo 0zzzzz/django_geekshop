@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.dispatch import receiver
 from django.forms.models import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -8,6 +9,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from basketapp.models import Basket
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
+from django.db.models.signals import pre_save, pre_delete
 
 
 class OrderListView(ListView):
@@ -48,10 +50,9 @@ class OrderCreateView(CreateView):
             form.instance.user = self.request.user
             self.object = form.save()
             if orderitems.is_valid():
-                basket_items = Basket.objects.filter(user=self.request.user)
                 orderitems.instance = self.object
                 orderitems.save()
-                basket_items.delete()
+                Basket.objects.filter(user=self.request.user).delete()
         if self.object.get_total_cost() == 0:
             self.object.delete()
         return super().form_valid(form)
@@ -105,3 +106,20 @@ def order_forming_complete(request, pk):
     order.status = Order.STATUS_SEND_TO_PROCEED
     order.save()
     return HttpResponseRedirect(reverse('order:list'))
+
+
+@receiver(pre_save, sender=OrderItem)
+@receiver(pre_save, sender=Basket)
+def product_quantity_update_save(sender, instance, **kwargs):
+    if instance.pk:
+        instance.product.quantity -= instance.quantity - sender.get_item(instance.pk).quantity
+    else:
+        instance.product.quantity -= instance.quantity
+    instance.product.save()
+
+
+@receiver(pre_delete, sender=OrderItem)
+@receiver(pre_delete, sender=Basket)
+def product_quantity_update_delete(sender, instance, **kwargs):
+    instance.product.quantity += instance.quantity
+    instance.product.save()

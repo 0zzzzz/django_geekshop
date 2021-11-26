@@ -3,7 +3,7 @@
 {% block content %}
     <div class="del_block">
         {% if object.is_active %}
-            Уверены, что хотите заказ? {{ user.name }}?
+            Уверены, что хотите удалить заказ №{{ object.id }}?
         {% else %}
             Уверены, что хотите востановить заказ?
         {% endif %}
@@ -21,21 +21,3 @@
         </button>
     </div>
 {% endblock %}
-
-{#{% block content %}#}
-{#    <div class="del_block">#}
-{#        {% if object.is_active %}#}
-{#            Уверены, что хотите заказ? {{ user.name }}?#}
-{#        {% else %}#}
-{#            Уверены, что хотите востановить заказ?#}
-{#        {% endif %}#}
-{#        {% include 'ordersapp/includes/inc_order_summary.html' %}#}
-{#        <form action="{% url 'ordersapp:delete' object.pk %}" method="post">#}
-{#            {% csrf_token %}#}
-{#            <input class="btn btn-danger" type="submit" value="удалить">#}
-{#        </form>#}
-{#        <button class="btn btn-success">#}
-{#            <a href="{% url 'ordersapp:list' %}">отмена</a>#}
-{#        </button>#}
-{#    </div>#}
-{#{% endblock %}#}
