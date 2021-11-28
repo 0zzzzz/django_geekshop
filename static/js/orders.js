@@ -52,10 +52,20 @@ window.onload = function() {
             $('.order_total_cost').html(order_total_cost.toString());
     }
 
-    // $('.order_form').on('click', 'input[type=checkbox]', function () {
-    //     let target = event.target;
-    //     console.log(target.value);
-    // });
+
+    $('.order_form').on('click', 'select', function (){
+        let target = event.target;
+        orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-product', ''));
+        _price = parseFloat($('.orderitems-' + orderitem_num + '-price').text().replace(',', '.'));
+        _quantity = parseInt($('input[name="orderitems-' + orderitem_num + '-quantity"]').val());
+        let test = target.value
+        $('.orderitems-'+ orderitem_num +'-price').text(test.toString());
+        order_total_cost = Number((order_total_cost -_price * _quantity + orderitem_num * _quantity).toFixed(2));
+        console.log(order_total_cost)
+        $('.order_total_cost').html(order_total_cost .toString());
+
+    });
+
 
     $('.formset_row').formset({
         addText: 'Добавить товар',
