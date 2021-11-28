@@ -61,9 +61,9 @@ window.onload = function() {
         let test = target.value
         $('.orderitems-'+ orderitem_num +'-price').text(test.toString());
         order_total_cost = Number((order_total_cost -_price * _quantity + orderitem_num * _quantity).toFixed(2));
-        console.log(order_total_cost)
+        _price = parseFloat($('.orderitems-' + orderitem_num + '-price').text().replace(',', '.'));
+        price_arr[orderitem_num] = _price
         $('.order_total_cost').html(order_total_cost .toString());
-
     });
 
 
