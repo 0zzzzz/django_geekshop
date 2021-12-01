@@ -4,6 +4,8 @@
 
 {% block content %}
     {% include 'ordersapp/includes/inc_order_summary.html' %}
+
+
         {% for item in object.orderitems.select_related %}
             <div class="order_record">
                 <img  src="/media/{{ item.product.image }}"
