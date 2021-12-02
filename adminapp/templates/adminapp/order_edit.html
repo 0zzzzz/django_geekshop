@@ -1,0 +1,57 @@
+{% extends "adminapp/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="admin_block">
+        <div class="products_list_admin">
+            <a class="admin_cross" href={% url 'adminapp:orders_list' user.id %}></a>
+            {% include 'adminapp/includes/inc_order_summary.html' %}
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <table class="table">
+                    {{ orderitems.management_form }}
+                    {% for form in orderitems.forms %}
+                        {% if forloop.first %}
+                            <thead>
+                            <tr>
+                                {% for field in form.visible_fields %}
+                                    <th class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                                        {{ field.label|capfirst }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                        {% endif %}
+                        <tr class="formset_row">
+                            {% for field in form.visible_fields %}
+                                <td class="{% cycle 'td1' 'td2' 'td3' %} order formset_td">
+                                    {% if forloop.first %}
+                                        {% for hidden in form.hidden_fields %}
+                                            {{ hidden }}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {{ field.errors.as_ul }}
+                                    {{ field }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <button type="submit" value="сохранить" class="btn btn-default btn-round form-control last">сохранить
+                </button>
+                <button class="btn btn-default btn-round form-control last">
+                <a href="{% url 'adminapp:orders_delete' object.pk %}">
+                    {% if object.is_active %}
+                        удалить
+                    {% else %}
+                        восстановить
+                    {% endif %}
+                </a>
+            </button>
+{#                {% include 'ordersapp/includes/inc_order_actions.html' %}#}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

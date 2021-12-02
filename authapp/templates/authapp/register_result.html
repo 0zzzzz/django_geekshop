@@ -1,0 +1,29 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    {#    <a href="{% url 'index' %}" class="edit_cross"></a>#}
+    {#    <div class="h2 text-center head">#}
+    {#        Вход в систему#}
+    {#    </div>#}
+    {#    <form class="form-horizontal" action="{% url 'auth:login' %}" method="POST" enctype="multipart/form-data">#}
+    {#        {% csrf_token %}#}
+    {#        {{ login_form.as_p }}#}
+    {#        {% if next %}#}
+    {#            <input type="hidden" name="next" value="{{ next }}">#}
+    {#        {% endif %}#}
+    {#        <input class="auth_button" type="submit" value="Войти">#}
+    {#    </form>#}
+    {#    <hr>#}
+    {#    <input class="auth_button" type="button" value="Зарегестрироваться"#}
+    {#           onClick="window.location='{% url 'auth:register' %}'"/>#}
+    {% if user.is_authenticated %}
+        <h1>Поздравляем!</h1>
+        <h2>Добро пожаловать в наш магазин</h2>
+    {% else %}
+        <h1>Ошибка</h1>
+        <h2>Что-то пошло не так</h2>
+        <p>Обратитесь в поддержку</p>
+    {% endif %}
+    <a href="{% url 'index' %}">На главную</a>
+{% endblock %}

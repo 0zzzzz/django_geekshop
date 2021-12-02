@@ -1,0 +1,11 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Account activation
+From: webmaster@localhost
+To: sfdg@fdsgd.sfdg
+Date: Tue, 16 Nov 2021 18:59:57 -0000
+Message-ID: <163708919746.14123.9862525244430383925@ozzzzz>
+
+Ваша ссылка для активации: http://localhost:8088/auth/verify/sfdg@fdsgd.sfdg/01fa3c356cd0ed7c64ed1ae3e0a628bfdd78842c/
+-------------------------------------------------------------------------------

@@ -1,0 +1,27 @@
+<ul class="menu">
+    <li>
+        <a href="{% url 'index' %}">
+            на сайт
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'adminapp:user_list' %}"
+           class="{% if 'user' in request.resolver_match.url_name %}
+                active
+              {% endif %}">
+            пользователи
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'adminapp:category_list' %}"
+           class="{% if 'category' in request.resolver_match.url_name or category.name %}
+                active
+              {% endif %}">
+            {% if category %}
+                категория<span>: {{ category.name }}</span>
+            {% else %}
+                категории
+            {% endif %}
+        </a>
+    </li>
+</ul>

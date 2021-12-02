@@ -1,0 +1,86 @@
+[
+  {
+    "category": "дом",
+    "name": "кухонный сплетник",
+    "image": "products/01.jpg",
+    "price": 3546,
+    "quantity": 234
+  },
+    {
+    "category": "дом",
+    "name": "срочно в номер",
+    "image": "products/02.jpg",
+    "price": 7645,
+    "quantity": 536
+  },
+    {
+    "category": "дом",
+    "name": "школяр",
+    "image": "products/03.jpg",
+    "price": 3564,
+    "quantity": 356
+  },
+  {
+    "category": "офис",
+    "name": "стажёр",
+    "image": "products/04.jpg",
+    "price": 3654,
+    "quantity": 243
+  },
+    {
+    "category": "офис",
+    "name": "менеджер",
+    "image": "products/05.jpg",
+    "price": 6457,
+    "quantity": 980
+  },
+    {
+    "category": "офис",
+    "name": "генеральный",
+    "image": "products/06.jpg",
+    "price": 5867,
+    "quantity": 254
+  },
+    {
+    "category": "классика",
+    "name": "застолье",
+    "image": "products/07.jpg",
+    "price": 9876,
+    "quantity": 456
+  },
+    {
+    "category": "классика",
+    "name": "экстренное совещание",
+    "image": "products/08.jpg",
+    "price": 5867,
+    "quantity": 254
+  },
+    {
+    "category": "классика",
+    "name": "дачный",
+    "image": "products/09.jpg",
+    "price": 7689,
+    "quantity": 142
+  },
+    {
+    "category": "модерн",
+    "name": "гедонист",
+    "image": "products/10.jpg",
+    "price": 8766,
+    "quantity": 0
+  },
+    {
+    "category": "модерн",
+    "name": "оранжевое кресло из икеи",
+    "image": "products/11.jpg",
+    "price": 3465,
+    "quantity": 254
+  },
+    {
+    "category": "модерн",
+    "name": "застолье v2.4",
+    "image": "products/12.jpg",
+    "price": 3547,
+    "quantity": 476
+  }
+]
