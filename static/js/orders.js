@@ -63,44 +63,35 @@ window.onload = function () {
 
     $('.order_form').on('click', 'select', function () {
         let target = event.target;
-        orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-product', ''));
-        _price = parseFloat($('.orderitems-' + orderitem_num + '-price').text().replace(',', '.'));
-        _quantity = parseInt($('input[name="orderitems-' + orderitem_num + '-quantity"]').val());
-        if (isNaN(_quantity)) {
-            _quantity = 0
-        }
-        let ajax_price = target.value
-        $('.orderitems-' + orderitem_num + '-price').text(ajax_price.toString());
-        let order_total = Number(order_total_cost - _price * _quantity + ajax_price * _quantity).toFixed(2);
-        order_total_cost = parseFloat(order_total);
-        $('.order_total_cost').html(order_total_cost.toString());
-        _price = parseFloat($('.orderitems-' + orderitem_num + '-price').text().replace(',', '.'));
-        price_arr[orderitem_num] = _price
-        // console.log(price_arr)
-        // $(document).ready(function() {
-        //     $('#id').change(function() {
-        //         let query = $(this).val();
-        //         console.log(query);
-        //         $.ajax({
-        //             url: "/update/",
-        //             type: "POST",
-        //             dataType: "json",
-        //             data: {
-        //                 client_response: query
-        //             },
-        //             success: function (json) {
-        //                 console.log(document.getElementById('id_amount').value = json.amount)
-        //                 document.getElementById('id_amount').value = json.amount;
-        //             },
-        //             failure: function (json) {
-        //                 alert('Got an error dude');
-        //             }
-        //         });
-        //     })
-        // })
-        // console.log('asdfgsdfgsdfgsdfgdsfg')
+        orderitem_num = parseInt(target.name.replace('orderitems-', '').replace('-quantity', ''));
+        let product_id = target.options[target.selectedIndex].value;
+        $.ajax({
+            url: '/order/product/price/' + product_id + '/',
+            success: function (data){
+                if(data.price){
+                    price_arr[orderitem_num] = data.price
+                    if(isNaN(quantity_arr[orderitem_num])){
+                        quantity_arr[orderitem_num] = 0
+                    }
+                    let price_string = '<snap>' + data.price.toString().replace('.',',') + '</snap>';
+                    let current_tr = $('.order_form table').find('tr:eq(' + (orderitem_num + 1) + ')');
+                    current_tr.find('td:eq(2)').html(price_string);
+                    //
+                    _price = parseFloat($('.orderitems-' + orderitem_num + '-price').text().replace(',', '.'));
+                    _quantity = parseInt($('input[name="orderitems-' + orderitem_num + '-quantity"]').val());
+                    if (isNaN(_quantity)) {
+                        _quantity = 0
+                    }
+                    $('.orderitems-' + orderitem_num + '-price').text(price_string.toString());
+                    let order_total = Number(order_total_cost - _price * _quantity + ajax_price * _quantity).toFixed(2);
+                    order_total_cost = parseFloat(order_total);
+                    $('.order_total_cost').html(order_total_cost.toString());
+                    _price = parseFloat($('.orderitems-' + orderitem_num + '-price').text().replace(',', '.'));
+                    price_arr[orderitem_num] = _price
+                }
+            }
+        })
     });
-
 
     $('.formset_row').formset({
         addText: 'Добавить товар',
@@ -115,12 +106,7 @@ window.onload = function () {
         orderitem_num = parseInt(target_name.replace('orderitems-', '').replace('-quantity', ''));
         delta_quantity = -quantity_arr[orderitem_num];
         quantity_arr.splice(orderitem_num, 1)
-        console.log(orderitem_num)
-        // console.log(quantity_arr)
-        // console.log(quantity_arr[orderitem_num])
         price_arr.splice(orderitem_num, 1)
-        console.log(price_arr[orderitem_num])
-        console.log(price_arr)
         order_summary_update(price_arr[orderitem_num], delta_quantity);
     }
 
