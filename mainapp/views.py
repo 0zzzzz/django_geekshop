@@ -3,6 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
 from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
+from django.views.generic import ListView
 
 
 # def get_basket(user):
@@ -84,3 +85,8 @@ def product(request, pk):
         'links_menu': ProductCategory.objects.all(),
     }
     return render(request, 'mainapp/product.html', context)
+
+
+class SearchResultsView(ListView):
+    model = Product
+    template_name = 'mainapp/search_results.html'
