@@ -1,17 +1,8 @@
 import random
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
-from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
 from django.views.generic import ListView
-
-
-# def get_basket(user):
-#     if user.is_authenticated:
-#         return Basket.objects.filter(user=user)
-#         # return sum(list(Basket.objects.filter(user=user).values_list('quantity', flat=True)))
-#     return None
-#     # return 0
 
 
 def get_hot_product():
@@ -19,7 +10,8 @@ def get_hot_product():
 
 
 def get_same_products(hot_product):
-    products_list = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
+    products_list = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk).select_related('category')[:3]
+    print(products_list.query)
     return products_list
 
 
@@ -50,7 +42,6 @@ def products(request, pk=None, page=1):
         else:
             category_item = get_object_or_404(ProductCategory, pk=pk)
             products_list = Product.objects.filter(category__pk=pk)
-        # page = request.GET.get('p', 1)
         paginator = Paginator(products_list, 3)
         try:
             products_paginator = paginator.page(page)
@@ -58,7 +49,6 @@ def products(request, pk=None, page=1):
             products_paginator = paginator.page(1)
         except EmptyPage:
             products_paginator = paginator.page(paginator.num_pages)
-        # products_paginator = paginator.page(page)
         context = {
             'links_menu': links_menu,
             'title': 'Продукты',
