@@ -65,7 +65,7 @@ def products(request, pk=None, page=1):
                 'pk': 0,
             }
         else:
-            category_item = get_category()
+            category_item = get_category(pk)
             products_list = Product.objects.filter(category__pk=pk)
         paginator = Paginator(products_list, 3)
         try:
