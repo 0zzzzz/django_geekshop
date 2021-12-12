@@ -3,7 +3,19 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404
 from mainapp.models import Product, ProductCategory
 from django.views.generic import ListView
+from django.conf import settings
+from django.core.cache import cache
 
+
+def get_links_menu():
+    if settings.LOW_CACHE:
+        key = 'categories'
+        links_menu = cache.get(key)
+        if links_menu is None:
+            links_menu = ProductCategory.objects.filter(is_active=True)
+            cache.set(key, links_menu)
+        return links_menu
+    return ProductCategory.objects.filter(is_active=True)
 
 def get_hot_product():
     return random.sample(list(Product.objects.all()), 1)[0]
@@ -11,7 +23,6 @@ def get_hot_product():
 
 def get_same_products(hot_product):
     products_list = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk).select_related('category')[:3]
-    print(products_list.query)
     return products_list
 
 
@@ -31,7 +42,8 @@ def contact(request):
 
 
 def products(request, pk=None, page=1):
-    links_menu = ProductCategory.objects.all()
+    links_menu = get_links_menu()
+    # links_menu = ProductCategory.objects.all()
     if pk is not None:
         if pk == 0:
             products_list = Product.objects.all()
@@ -61,7 +73,7 @@ def products(request, pk=None, page=1):
     same_products = get_same_products(hot_product)
 
     context = {
-        'links_menu': ProductCategory.objects.all(),
+        'links_menu': links_menu,
         'title': 'Продукты',
         'hot_product': hot_product,
         'same_products': same_products,
@@ -72,7 +84,7 @@ def products(request, pk=None, page=1):
 def product(request, pk):
     context = {
         'product': get_object_or_404(Product, pk=pk),
-        'links_menu': ProductCategory.objects.all(),
+        'links_menu': get_links_menu(),
     }
     return render(request, 'mainapp/product.html', context)
 
