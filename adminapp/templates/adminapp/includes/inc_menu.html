@@ -13,6 +13,14 @@
         </a>
     </li>
     <li>
+        <a href="{% url 'adminapp:statistics' %}"
+           class="{% if 'statistics' in request.resolver_match.url_name %}
+                active
+              {% endif %}">
+            статистика продаж
+        </a>
+    </li>
+    <li>
         <a href="{% url 'adminapp:category_list' %}"
            class="{% if 'category' in request.resolver_match.url_name or category.name %}
                 active

@@ -1,0 +1,10 @@
+{% extends "adminapp/base.html" %}
+{% load static %}
+{#{% load my_tags %}#}
+
+{% block content %}
+    <div class="admin_block">
+        <div class="products_list_admin">
+            <a class="admin_cross" href={% url 'adminapp:orders_list' user.id %}></a>
+                {{ product }}
+{% endblock %}

@@ -178,19 +178,6 @@ class OrdersListView(AccessMixin, ListView):
     def get_queryset(self):
         return Order.objects.filter(user_id=self.kwargs.get('pk'))
 
-# class OrdersCreateView(AccessMixin, CreateView):
-#     model = Order
-#     template_name = 'adminapp/product_form.html'
-#     form_class = ProductCreateForm
-#
-#     def get_success_url(self):
-#         product_item = Product.objects.get(pk=self.kwargs['pk'])
-#         return reverse('adminapp:product_list', args=[product_item.category_id])
-#
-#     def get(self, request, **kwargs):
-#         form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
-#         print(form['category'])
-#         return render(request, 'adminapp/product_form.html', {'form': form})
 
 
 class OrderUpdateView(AccessMixin, UpdateView):
@@ -245,3 +232,11 @@ def order_forming_complete(request, pk):
     order.status = Order.STATUS_SEND_TO_PROCEED
     order.save()
     return HttpResponseRedirect(reverse('adminapp:orders_list', args=[order_item.user_id]))
+
+
+def sales_statistics(request):
+    product_item = Order.objects.all().filter(status='STP')
+    context = {
+        'product': product_item,
+    }
+    return render(request, 'adminapp/statistics.html', context)

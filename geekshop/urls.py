@@ -29,6 +29,7 @@ urlpatterns = [
     path('old_admin/', admin.site.urls),
     path('admin/', include('adminapp.urls', namespace='adminapp')),
     path('basket/', include('basketapp.urls', namespace='basket')),
+    path('favourite/', include('favouritesapp.urls', namespace='favourite')),
 ]
 
 if settings.DEBUG:

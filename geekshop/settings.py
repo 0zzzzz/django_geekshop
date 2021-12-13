@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     'debug_toolbar',
     'social_django',
+    'favouritesapp',
     'template_profiler_panel',
     'adminapp',
     'authapp',
