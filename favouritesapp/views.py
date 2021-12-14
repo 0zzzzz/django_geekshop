@@ -29,6 +29,6 @@ def add(request, pk):
 
 @login_required
 def remove(request, pk):
-    favorite_item = get_object_or_404(FavoriteProducts, pk=pk)
+    favorite_item = FavoriteProducts.objects.filter(user_id=request.user, product_id=pk).first()
     favorite_item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

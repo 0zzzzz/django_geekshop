@@ -41,6 +41,8 @@
     {% if user.is_superuser %}
         <li><a class="log_admin" href="{% url 'adminapp:user_list' %}">админка</a></li>
     {% endif %}
+    <li>Курс: {{ dollars }}</li>
+
 </ul>
 <a href="#" class="search"></a>
 {#<form action="{% url 'search_results' %}" method="get">#}

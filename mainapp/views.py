@@ -6,6 +6,8 @@ from django.views.generic import ListView
 from django.conf import settings
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
+from mainapp.context_processors import dollars
+from favouritesapp.models import FavoriteProducts
 
 
 def get_links_menu():
@@ -148,8 +150,11 @@ def products(request, pk=None, page=1):
 
 
 def product(request, pk):
+    favorite = FavoriteProducts.objects.filter(product_id=pk, user_id=request.user)
     context = {
+        'favorite': favorite,
         'product': get_product(pk),
+        'price_in_dollars': float(get_product(pk).price)/dollars(request)['dollars'],
         'links_menu': get_links_menu(),
     }
     return render(request, 'mainapp/product.html', context)
