@@ -159,6 +159,19 @@ def product(request, pk):
     }
     return render(request, 'mainapp/product.html', context)
 
+def favorite_products(request, pk=None):
+    favorite = FavoriteProducts.objects.filter(user_id=request.user)
+    # products_list = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk).select_related(
+    #     'category')[:3]
+    print(favorite)
+
+    context = {
+        'favorite': favorite,
+        # 'product': get_product(pk),
+        # 'price_in_dollars': float(get_product(pk).price) / dollars(request)['dollars'],
+        'links_menu': get_links_menu(),
+    }
+    return render(request, 'mainapp/favorite_products.html', context)
 
 class SearchResultsView(ListView):
     model = Product

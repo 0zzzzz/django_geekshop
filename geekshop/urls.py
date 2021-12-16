@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', include('adminapp.urls', namespace='adminapp')),
     path('basket/', include('basketapp.urls', namespace='basket')),
     path('favourite/', include('favouritesapp.urls', namespace='favourite')),
+    path('favorite/', mainapp.favorite_products, name='fav'),
     path('merchant/', include('interkassaapp.urls', namespace='merchant')),
 ]
 
