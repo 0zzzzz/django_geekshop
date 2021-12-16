@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-02 14:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: interkassaapp/__init__.py:11
+msgid "Interkassa Merchant"
+msgstr "Interkassa Мерчант"
+
+#: interkassaapp/models.py:11
+msgid "User"
+msgstr "Пользователь"
+
+#: interkassaapp/models.py:12 interkassaapp/models.py:70
+msgid "Created on"
+msgstr "Дата создания"
+
+#: interkassaapp/models.py:13
+msgid "Payment on"
+msgstr "Номер платежа"
+
+#: interkassaapp/models.py:14
+msgid "Payment Info"
+msgstr "Информация о платеже"
+
+#: interkassaapp/models.py:15 interkassaapp/models.py:72
+msgid "Amount"
+msgstr "Сумма"
+
+#: interkassaapp/models.py:18
+msgid "invoice"
+msgstr "инвойс"
+
+#: interkassaapp/models.py:19
+msgid "invoices"
+msgstr "инвойсы"
+
+#: interkassaapp/models.py:30
+msgid "is payed"
+msgstr "оплачен"
+
+#: interkassaapp/models.py:31 interkassaapp/models.py:79
+msgid "payment"
+msgstr "платеж"
+
+#: interkassaapp/models.py:64
+#, python-format
+msgid "%(payment_no)s/%(created_on)s (for: %(user)s)"
+msgstr "%(payment_no)s/%(created_on)s (для: %(user)s)"
+
+#: interkassaapp/models.py:71
+msgid "Invoice"
+msgstr "Инвойс"
+
+#: interkassaapp/models.py:73
+msgid "Payment no"
+msgstr "Номер платежа"
+
+#: interkassa_merchant/models.py:74
+msgid "Payway Via"
+msgstr ""
+
+#: interkassaapp/models.py:75
+msgid "Currency"
+msgstr ""
+
+#: interkassaapp/models.py:76
+msgid "Invoice Processed"
+msgstr ""
+
+#: interkassaapp/models.py:80
+msgid "payments"
+msgstr "платежи"
+
+#: interkassaapp/models.py:83
+#, python-format
+msgid "%(payment_no)s - %(amount)s"
+msgstr ""
+
+#: interkassaapp/templates/interkassaapp/fail.html:2
+msgid "Payment was not completed."
+msgstr ""
+
+#: interkassaapp/templates/interkassaapp/success.html:2
+msgid "Your payment successfully completed."
+msgstr ""
+
+#: interkassaapp/templates/interkassaapp/wait.html:2
+msgid "Your payment is still processing."
+msgstr ""

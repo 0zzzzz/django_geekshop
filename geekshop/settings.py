@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'authapp',
     'basketapp',
     'ordersapp',
+    'interkassaapp',
     'mainapp',
 ]
 
@@ -243,4 +244,7 @@ CACHE = {
 }
 
 LOW_CACHE = True
+
+INTERKASSA_ID=os.getenv('INTERKASSA_ID')
+INTERKASSA_SECRET=os.getenv('INTERKASSA_SECRET')
 

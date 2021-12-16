@@ -1,0 +1,60 @@
+<a href="{% url 'index' %}" class="logo"></a>
+<ul class="menu">
+    <li>
+        <a href="{% url 'index' %}"
+           {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>домой</a>
+    </li>
+    <li>
+        <a href="{% url 'products:products' %}"
+           {% if request.resolver_match.namespace == 'products' %}class="active"{% endif %}>продукты</a>
+    </li>
+    <li>
+        <a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>контакты</a>
+    </li>
+    {% if user.is_authenticated %}
+        <li><a class="log_regedit" href="{% url 'order:list' %}">заказы</a></li>
+        <li><a class="log_regedit" href="{% url 'auth:edit' %}">{{ user.first_name|default:'пользователь' }}</a></li>
+        <li><a class="log_entexit" href="{% url 'auth:logout' %}">выйти</a></li>
+    {% else %}
+        <li><a class="log_regedit" href="{% url 'auth:register' %}">регистрация</a></li>
+        <li><a class="log_entexit" href="{% url 'auth:login' %}">войти</a></li>
+    {% endif %}
+    {#    {% if user.is_authenticated %}#}
+    {#        <li>#}
+    {#            <div class="dropdown">#}
+    {#                <a class="dropdown-toggle" href="" data-toggle="dropdown">#}
+    {#                    {{ user.first_name|default:'Пользователь' }}#}
+    {#                    <span class="caret"></span>#}
+    {#                </a>#}
+    {#                <ul class="dropdown-menu">#}
+    {#                    <li><a href="{% url 'auth:edit' %}">профиль</a></li>#}
+    {#                                        <li><a href="{% url 'ordersapp:orders_list' %}">заказы</a></li>#}
+    {#                    <li><a href="#">заказы</a></li>#}
+    {#                    <li><a class="log_entexit" href="{% url 'auth:logout' %}">выйти</a></li>#}
+    {#                </ul>#}
+    {#            </div>#}
+    {#        </li>#}
+    {#    {% else %}#}
+    {#        <li><a class="log_regedit" href="{% url 'auth:register' %}">регистрация</a></li>#}
+    {#        <li><a class="log_entexit" href="{% url 'auth:login' %}">войти</a></li>#}
+    {#    {% endif %}#}
+    {% if user.is_superuser %}
+        <li><a class="log_admin" href="{% url 'adminapp:user_list' %}">админка</a></li>
+    {% endif %}
+    <li>Курс: {{ dollars }}</li>
+
+</ul>
+<a href="#" class="search"></a>
+{#<form action="{% url 'search_results' %}" method="get">#}
+{#  <input name="q" type="text" placeholder="Search...">#}
+{#</form>#}
+<a href="{% url 'basket:basket' %}" class="basket">
+    {#    {% if basket.lenght > 0 %}#}
+    {% if basket %}
+        {{ basket.0.total_cost|floatformat:0 }} руб. <br>
+        {{ basket.0.total_quantity }} шт.
+    {% endif %}
+    {#    <p class="basket_count">{% if basket %}{{ basket.count }}{% endif %}</p>#}
+</a>
+
+{#<a href="{% url 'basket:basket' %}" class="basket"><p class="basket_count">{% if basket %}{{ basket }}{% endif %}</p></a>#}
