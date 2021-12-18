@@ -12,10 +12,12 @@
     <li>
         <a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>контакты</a>
     </li>
-    <li>
-        <a href="{% url 'fav' %}"
-           {% if request.resolver_match.url_name == 'fav' %}class="active"{% endif %}>fav</a>
-    </li>
+    {% if user.is_authenticated %}
+        <li>
+            <a href="{% url 'fav' %}"
+               {% if request.resolver_match.url_name == 'fav' %}class="active"{% endif %}>любимое</a>
+        </li>
+    {% endif %}
     {% if user.is_authenticated %}
         <li><a class="log_regedit" href="{% url 'order:list' %}">заказы</a></li>
         <li><a class="log_regedit" href="{% url 'auth:edit' %}">{{ user.first_name|default:'пользователь' }}</a></li>

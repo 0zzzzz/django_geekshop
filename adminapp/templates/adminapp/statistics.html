@@ -5,6 +5,14 @@
 {% block content %}
     <div class="admin_block">
         <div class="products_list_admin">
-            <a class="admin_cross" href={% url 'adminapp:orders_list' user.id %}></a>
-                {{ product }}
+            {% for item in sales_query %}
+                <div class="basket_record">
+                    <img src="/media/{{ item.product__image }}" alt="{{ item.product.short_desc }}">
+                    <span class="product_name">{{ item.product__name }}</span>
+                    <span class="product_price">{{ item.product__price }}&nbspруб</span>
+                    <span class="product_cost"><b>Количество продаж {{ item.quantity }}</b></span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

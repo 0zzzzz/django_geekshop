@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.db import transaction
+from django.db.models import F, Q
+from django.db.models.aggregates import Sum, Count, Avg
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -14,6 +16,7 @@ from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
+import collections
 
 
 class AccessMixin:
@@ -235,8 +238,9 @@ def order_forming_complete(request, pk):
 
 
 def sales_statistics(request):
-    product_item = Order.objects.all().filter(status='STP')
+    sales_query = OrderItem.objects.filter(Q(order__status='STP'))\
+        .values('product_id', 'product__name', 'product__image', 'product__price').annotate(quantity=Sum('quantity'))
     context = {
-        'product': product_item,
+        'sales_query': sales_query,
     }
     return render(request, 'adminapp/statistics.html', context)

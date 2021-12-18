@@ -1,18 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from favouritesapp.models import FavoriteProducts
 from mainapp.models import Product
-from django.urls import reverse
-
-
-@login_required
-def basket(request):
-    baskets_list = FavoriteProducts.objects.filter(user=request.user)
-    content = {
-        'baskets': baskets_list
-    }
-    return render(request, 'basketapp/basket.html', content)
 
 
 @login_required

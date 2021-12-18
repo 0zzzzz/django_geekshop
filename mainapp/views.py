@@ -73,7 +73,8 @@ def get_products_in_category_orederd_by_price(pk):
         key = f'products_in_category_orederd_by_price_{pk}'
         products = cache.get(key)
         if products is None:
-            products = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True).order_by('price')
+            products = Product.objects.filter(category__pk=pk, is_active=True, category__is_active=True).order_by(
+                'price')
             cache.set(key, products)
         return products
     else:
@@ -84,7 +85,6 @@ def get_hot_product():
     products = get_products()
     # return random.sample(list(Product.objects.all()), 1)[0]
     return random.sample(list(products), 1)[0]
-
 
 
 def get_same_products(hot_product):
@@ -154,24 +154,19 @@ def product(request, pk):
     context = {
         'favorite': favorite,
         'product': get_product(pk),
-        'price_in_dollars': float(get_product(pk).price)/dollars(request)['dollars'],
+        'price_in_dollars': float(get_product(pk).price) / dollars(request)['dollars'],
         'links_menu': get_links_menu(),
     }
     return render(request, 'mainapp/product.html', context)
 
-def favorite_products(request, pk=None):
-    favorite = FavoriteProducts.objects.filter(user_id=request.user)
-    # products_list = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk).select_related(
-    #     'category')[:3]
-    print(favorite)
 
+def favorite_products(request):
+    favorite = FavoriteProducts.objects.filter(user_id=request.user)
     context = {
         'favorite': favorite,
-        # 'product': get_product(pk),
-        # 'price_in_dollars': float(get_product(pk).price) / dollars(request)['dollars'],
-        'links_menu': get_links_menu(),
     }
     return render(request, 'mainapp/favorite_products.html', context)
+
 
 class SearchResultsView(ListView):
     model = Product
