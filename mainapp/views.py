@@ -171,3 +171,5 @@ def favorite_products(request):
 class SearchResultsView(ListView):
     model = Product
     template_name = 'mainapp/search_results.html'
+
+

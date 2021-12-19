@@ -5,6 +5,12 @@ from django.urls import reverse
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileEditForm
 from authapp.models import ShopUser
 from authapp.services import send_verify_email
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from authapp.serializers import RegistrationSerializer, LoginSerializer, LoadSerializer
+from authapp.renderers import UserJSONRenderer
 
 
 def login(request):
@@ -14,6 +20,7 @@ def login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
+        print(user)
         if user and user.is_active:
             auth.login(request, user)
             if 'next' in request.POST.keys():
@@ -71,3 +78,43 @@ def verify(request, email, key):
             user.activate_user()
             auth.login(request, user)
     return render(request, 'authapp/register_result.html')
+
+
+class RegistrationAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = RegistrationSerializer
+    renderer_classes = (UserJSONRenderer,)
+
+    def post(self, request):
+        user = request.data.get('user', {})
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class LoginAPIView(APIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        user = request.data.get('user', {})
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LoadAPIView(APIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = LoadSerializer
+
+    def post(self, request):
+        user = request.data.get('user', {})
+        serializer = self.serializer_class(data=user)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

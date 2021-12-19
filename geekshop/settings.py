@@ -245,6 +245,10 @@ CACHE = {
 
 LOW_CACHE = True
 
-INTERKASSA_ID=os.getenv('INTERKASSA_ID')
-INTERKASSA_SECRET=os.getenv('INTERKASSA_SECRET')
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}

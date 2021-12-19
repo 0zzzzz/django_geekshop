@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import jwt
 import pytz
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
@@ -25,6 +26,18 @@ class ShopUser(AbstractUser):
         self.activate_key = None
         self.activate_key_expired = None
         self.save()
+
+    @property
+    def token(self):
+        return self._generate_jwt_token()
+
+    def _generate_jwt_token(self):
+        dt = datetime.now() + timedelta(days=1)
+        token = jwt.encode({
+            'id': self.pk,
+            'exp': int(dt.strftime('%s'))
+        }, settings.SECRET_KEY, algorithm='HS256')
+        return token
 
 
 class ShopUserProfile(models.Model):

@@ -11,4 +11,5 @@ urlpatterns = [
     path('category/<int:pk>/<int:page>/', mainapp.products, name='category_page'),
     path('product/<int:pk>/', mainapp.product, name='product'),
     path('search/', mainapp.SearchResultsView.as_view(), name='search_results'),
+    # path('load/', mainapp.postman, name='load'),
 ]
