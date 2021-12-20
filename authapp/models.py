@@ -16,6 +16,7 @@ class ShopUser(AbstractUser):
     activate_key = models.CharField(max_length=128, verbose_name='Ключ активации', blank=True, null=True)
     activate_key_expired = models.DateTimeField(blank=True, null=True)
 
+
     def is_activate_key_expired(self):
         if datetime.now(pytz.timezone(settings.TIME_ZONE)) > self.activate_key_expired + timedelta(hours=48):
             return True

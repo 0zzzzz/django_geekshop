@@ -27,6 +27,7 @@ class LoginSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=255, read_only=True)
 
     def validate(self, data):
+        print(data)
         username = data.get('username', None)
         email = data.get('email', None)
         password = data.get('password', None)
@@ -54,24 +55,16 @@ class LoginSerializer(serializers.Serializer):
         }
 
 
-class LoadSerializer(serializers.Serializer):
-    category = serializers.CharField(max_length=255)
+class LoadSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    category_id = serializers.IntegerField()
     name = serializers.CharField(max_length=255)
-    image = serializers.CharField(max_length=255)
-    price = serializers.CharField(max_length=255)
-    quantity = serializers.CharField(max_length=255)
+    price = serializers.IntegerField()
+    quantity = serializers.IntegerField()
 
-    def postman(self, data):
-        print(data)
-        print(data)
-        products = data
-        for product in products:
-            category_name = product['category']
-            category_item = ProductCategory.objects.get(name=category_name)
-            product['category'] = category_item
-            Product.objects.create(**product)
-            return {
-                'email': product.category,
-                'username': product.name,
-                'token': product.price,
-            }
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return Product.objects.create(**validated_data)
