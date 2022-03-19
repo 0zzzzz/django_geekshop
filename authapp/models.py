@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import jwt
 import pytz
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
@@ -15,6 +16,7 @@ class ShopUser(AbstractUser):
     activate_key = models.CharField(max_length=128, verbose_name='Ключ активации', blank=True, null=True)
     activate_key_expired = models.DateTimeField(blank=True, null=True)
 
+
     def is_activate_key_expired(self):
         if datetime.now(pytz.timezone(settings.TIME_ZONE)) > self.activate_key_expired + timedelta(hours=48):
             return True
@@ -25,6 +27,18 @@ class ShopUser(AbstractUser):
         self.activate_key = None
         self.activate_key_expired = None
         self.save()
+
+    @property
+    def token(self):
+        return self._generate_jwt_token()
+
+    def _generate_jwt_token(self):
+        dt = datetime.now() + timedelta(days=1)
+        token = jwt.encode({
+            'id': self.pk,
+            'exp': int(dt.strftime('%s'))
+        }, settings.SECRET_KEY, algorithm='HS256')
+        return token
 
 
 class ShopUserProfile(models.Model):

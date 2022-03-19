@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.db import transaction
+from django.db.models import F, Q
+from django.db.models.aggregates import Sum, Count, Avg
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -14,6 +16,7 @@ from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
 from ordersapp.forms import OrderItemForm
 from ordersapp.models import Order, OrderItem
+import collections
 
 
 class AccessMixin:
@@ -178,19 +181,6 @@ class OrdersListView(AccessMixin, ListView):
     def get_queryset(self):
         return Order.objects.filter(user_id=self.kwargs.get('pk'))
 
-# class OrdersCreateView(AccessMixin, CreateView):
-#     model = Order
-#     template_name = 'adminapp/product_form.html'
-#     form_class = ProductCreateForm
-#
-#     def get_success_url(self):
-#         product_item = Product.objects.get(pk=self.kwargs['pk'])
-#         return reverse('adminapp:product_list', args=[product_item.category_id])
-#
-#     def get(self, request, **kwargs):
-#         form = ProductCreateForm(initial={'category': get_object_or_404(ProductCategory, pk=self.kwargs['pk'])})
-#         print(form['category'])
-#         return render(request, 'adminapp/product_form.html', {'form': form})
 
 
 class OrderUpdateView(AccessMixin, UpdateView):
@@ -245,3 +235,12 @@ def order_forming_complete(request, pk):
     order.status = Order.STATUS_SEND_TO_PROCEED
     order.save()
     return HttpResponseRedirect(reverse('adminapp:orders_list', args=[order_item.user_id]))
+
+
+def sales_statistics(request):
+    sales_query = OrderItem.objects.filter(Q(order__status='STP'))\
+        .values('product_id', 'product__name', 'product__image', 'product__price').annotate(quantity=Sum('quantity'))
+    context = {
+        'sales_query': sales_query,
+    }
+    return render(request, 'adminapp/statistics.html', context)

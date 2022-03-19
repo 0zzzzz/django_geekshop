@@ -1,0 +1,18 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load media_tags %}
+
+{% block menu %}
+    <div class="hero-white">
+        <div class="header clearfix">
+            {% include 'mainapp/includes/inc_main_menu.html' %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% for item in products %}
+        {{ item }}
+
+    {% endfor %}
+{% endblock %}

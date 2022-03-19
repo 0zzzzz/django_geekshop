@@ -1,0 +1,21 @@
+{% extends 'interkassaapp/base.html' %}
+{#{% load static %}#}
+
+{% block title %}Пополнить баланс{% endblock %}
+{% block content %}
+    <form role="form" method="post" action=""
+          accept-charset="UTF-8" name="payment" id="merchant-form">
+        <h3>Сумма пополнения</h3>
+        <input type="number" min="1" max="100000"
+               name="amount" value="{{ default_amount }}">
+        {{ form }}
+        <br><button type="submit" class="btn pre-footer-btn">
+            Пополнить</button>
+        {% csrf_token %}
+    </form>
+{% endblock %}
+{#{% block jquery_scripts %}#}
+{#    if($("#id_ik_co_id").val().length>0){#}
+{#        $("#merchant-form").attr('action', 'https://sci.interkassa.com/').submit();#}
+{#    }#}
+{#{% endblock %}#}
